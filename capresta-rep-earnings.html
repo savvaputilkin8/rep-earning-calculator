@@ -1,0 +1,1476 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Capresta Corporation — Rep Earnings Calculator</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Manrope:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #f5f6f8;
+    --white: #ffffff;
+    --navy: #0f1f3d;
+    --navy-mid: #1e3a6e;
+    --blue: #2563eb;
+    --blue-light: #eff4ff;
+    --blue-mid: #bfcffd;
+    --green: #15803d;
+    --green-bg: #f0fdf4;
+    --green-border: #86efac;
+    --green-bright: #16a34a;
+    --red: #b91c1c;
+    --red-bg: #fef2f2;
+    --amber: #92400e;
+    --amber-bg: #fffbeb;
+    --amber-border: #fcd34d;
+    --gold: #d97706;
+    --text: #0f1f3d;
+    --text-secondary: #4b5e7a;
+    --text-muted: #8a9ab5;
+    --border: #e2e8f0;
+    --border-dark: #cbd5e1;
+    --radius: 8px;
+    --radius-lg: 12px;
+    --shadow: 0 1px 3px rgba(15,31,61,0.07), 0 1px 2px rgba(15,31,61,0.04);
+    --shadow-md: 0 4px 16px rgba(15,31,61,0.1), 0 2px 4px rgba(15,31,61,0.05);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Manrope', sans-serif;
+    font-size: 14px;
+    line-height: 1.6;
+    min-height: 100vh;
+  }
+
+  .topbar {
+    background: var(--navy);
+    padding: 0 40px;
+    height: 56px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .topbar-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .topbar-logo {
+    width: 32px;
+    height: 32px;
+    background: var(--blue);
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .topbar-name {
+    font-family: 'Playfair Display', serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: #fff;
+  }
+
+  .topbar-right {
+    font-size: 12px;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.04em;
+  }
+
+  .app {
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 36px 24px 80px;
+  }
+
+  .page-header {
+    margin-bottom: 24px;
+  }
+
+  .page-header h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+  }
+
+  .page-header p {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-top: 4px;
+  }
+
+  /* Tab nav */
+  .tab-nav {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 24px;
+    border-bottom: 2px solid var(--border);
+    padding-bottom: 0;
+  }
+
+  .tab-btn {
+    padding: 10px 20px;
+    border: none;
+    background: none;
+    font-family: 'Manrope', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+    cursor: pointer;
+    border-bottom: 2px solid transparent;
+    margin-bottom: -2px;
+    border-radius: var(--radius) var(--radius) 0 0;
+    transition: all 0.15s;
+  }
+
+  .tab-btn:hover { color: var(--navy); background: var(--blue-light); }
+
+  .tab-btn.active {
+    color: var(--blue);
+    border-bottom-color: var(--blue);
+    background: var(--blue-light);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Main layout */
+  .layout {
+    display: grid;
+    grid-template-columns: 310px 1fr;
+    gap: 20px;
+    align-items: start;
+  }
+
+  @media (max-width: 860px) { .layout { grid-template-columns: 1fr; } }
+
+  .panel {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 24px;
+    box-shadow: var(--shadow);
+  }
+
+  .panel-title {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  /* Sliders */
+  .slider-group { margin-bottom: 18px; }
+
+  .slider-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+  }
+
+  .slider-label {
+    font-size: 13px;
+    color: var(--text-secondary);
+    font-weight: 500;
+  }
+
+  .slider-value {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    background: var(--blue-light);
+    border: 1px solid var(--blue-mid);
+    border-radius: 4px;
+    padding: 2px 10px;
+    min-width: 60px;
+    text-align: center;
+  }
+
+  input[type=range] {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 100%;
+    height: 3px;
+    background: var(--border-dark);
+    border-radius: 2px;
+    outline: none;
+    cursor: pointer;
+  }
+
+  input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: var(--blue);
+    border: 2px solid #fff;
+    box-shadow: 0 1px 4px rgba(37,99,235,0.4);
+    cursor: pointer;
+    transition: transform 0.15s;
+  }
+
+  input[type=range]::-webkit-slider-thumb:hover { transform: scale(1.2); }
+  input[type=range]::-moz-range-thumb {
+    width: 16px; height: 16px; border-radius: 50%;
+    background: var(--blue); border: 2px solid #fff; cursor: pointer;
+  }
+
+  .divider { height: 1px; background: var(--border); margin: 16px 0; }
+
+  .input-note {
+    background: var(--amber-bg);
+    border: 1px solid var(--amber-border);
+    border-radius: var(--radius);
+    padding: 10px 14px;
+    font-size: 12px;
+    color: var(--amber);
+    font-weight: 500;
+    margin-top: 16px;
+  }
+
+  /* Toggle switch */
+  .toggle-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 14px 0 4px;
+  }
+
+  .toggle-label {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--navy);
+  }
+
+  .toggle-label-sub {
+    font-size: 11px;
+    color: var(--text-muted);
+    margin-top: 1px;
+  }
+
+  .toggle-switch {
+    position: relative;
+    width: 44px;
+    height: 24px;
+    flex-shrink: 0;
+  }
+
+  .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+  .toggle-track {
+    position: absolute;
+    inset: 0;
+    background: var(--border-dark);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .toggle-track::after {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 3px;
+    width: 18px;
+    height: 18px;
+    background: #fff;
+    border-radius: 50%;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    transition: transform 0.2s;
+  }
+
+  .toggle-switch input:checked + .toggle-track { background: var(--blue); }
+  .toggle-switch input:checked + .toggle-track::after { transform: translateX(20px); }
+
+  /* Bonus-only inputs */
+  .bonus-inputs { display: none; }
+  .bonus-inputs.visible { display: block; }
+
+  .bonus-section-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--blue);
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    margin: 16px 0 14px;
+    padding-top: 14px;
+    border-top: 1px solid var(--blue-mid);
+  }
+
+  /* Right column */
+  .right-col { display: flex; flex-direction: column; gap: 16px; }
+
+  /* Big earnings banner */
+  .earnings-hero {
+    background: var(--navy);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .earnings-hero .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 4px;
+  }
+
+  .earnings-hero .hero-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 42px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .earnings-hero .hero-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  .hero-stats {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  .hero-stat { text-align: right; }
+  .hero-stat .hs-lbl { font-size: 11px; color: rgba(255,255,255,0.4); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 600; margin-bottom: 2px; }
+  .hero-stat .hs-val { font-size: 18px; font-weight: 700; color: rgba(255,255,255,0.9); }
+
+  /* KPI grid */
+  .kpi-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 12px;
+  }
+
+  .kpi-grid.two-col { grid-template-columns: repeat(2, 1fr); }
+
+  @media (max-width: 900px) { .kpi-grid { grid-template-columns: repeat(2, 1fr); } }
+
+  .kpi {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    padding: 16px 18px;
+    box-shadow: var(--shadow);
+  }
+
+  .kpi.green-card {
+    background: var(--green-bg);
+    border-color: var(--green-border);
+  }
+
+  .kpi-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+
+  .kpi.green-card .kpi-label { color: var(--green); }
+
+  .kpi-value {
+    font-family: 'Playfair Display', serif;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--navy);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  .kpi.green-card .kpi-value { color: var(--green-bright); }
+
+  .kpi-sub {
+    font-size: 12px;
+    color: var(--text-muted);
+    margin-top: 5px;
+  }
+
+  /* Breakdown table */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead th {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    text-align: left;
+    padding: 0 0 10px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  thead th:not(:first-child) { text-align: right; }
+
+  tbody td {
+    padding: 9px 0;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-secondary);
+    vertical-align: middle;
+  }
+
+  tbody td:not(:first-child) { text-align: right; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  td.strong { color: var(--navy); font-weight: 600; }
+  td.pos { color: var(--green-bright); font-weight: 600; }
+  td.zero { color: var(--text-muted); }
+  td.gold { color: var(--gold); font-weight: 700; }
+  td.sep { border-top: 2px solid var(--border-dark); padding-top: 12px; }
+  td.dim { color: var(--text-muted); font-size: 12px; }
+  td.blue { color: var(--blue); }
+
+  /* Bonus badges */
+  .bonus-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+  }
+
+  .badge-green { background: var(--green-bg); color: var(--green-bright); border: 1px solid var(--green-border); }
+  .badge-gold { background: var(--amber-bg); color: var(--gold); border: 1px solid var(--amber-border); }
+  .badge-gray { background: var(--bg); color: var(--text-muted); border: 1px solid var(--border); }
+
+  /* Progress bars */
+  .milestone-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+  }
+
+  @media (max-width: 700px) { .milestone-grid { grid-template-columns: 1fr; } }
+
+  .milestone-card {
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    background: var(--bg);
+  }
+
+  .milestone-card.achieved {
+    border-color: var(--green-border);
+    background: var(--green-bg);
+  }
+
+  .milestone-card.achieved .mc-label { color: var(--green); }
+
+  .mc-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+    margin-bottom: 4px;
+  }
+
+  .mc-desc {
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+  }
+
+  .mc-achieved { font-size: 13px; color: var(--green-bright); font-weight: 700; }
+  .mc-bonus { font-size: 12px; color: var(--text-muted); }
+
+  .progress-track {
+    height: 6px;
+    background: var(--border-dark);
+    border-radius: 3px;
+    overflow: hidden;
+    margin-bottom: 4px;
+  }
+
+  .progress-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--blue);
+    transition: width 0.4s cubic-bezier(0.4,0,0.2,1);
+  }
+
+  .progress-fill.done { background: var(--green-bright); }
+
+  .progress-labels {
+    display: flex;
+    justify-content: space-between;
+    font-size: 11px;
+    color: var(--text-muted);
+  }
+
+  /* Comp table reference */
+  .comp-table-wrap { overflow-x: auto; }
+
+  .comp-ref th { white-space: nowrap; }
+  .comp-ref td { font-size: 12px; }
+  .comp-ref td:first-child { font-weight: 600; color: var(--navy); }
+
+  /* Tab 2 hero */
+  .target-hero {
+    background: var(--navy);
+    border-radius: var(--radius-lg);
+    padding: 24px 28px;
+    box-shadow: var(--shadow-md);
+  }
+
+  .target-hero .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.45);
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    margin-bottom: 8px;
+  }
+
+  .target-hero .hero-main {
+    font-family: 'Playfair Display', serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: #fff;
+    line-height: 1.3;
+  }
+
+  .target-hero .hero-main span { color: #7dd3fc; }
+
+  .target-hero .hero-sub {
+    font-size: 13px;
+    color: rgba(255,255,255,0.5);
+    margin-top: 6px;
+  }
+
+  /* Timeline table */
+  .timeline-wrap { overflow-x: auto; }
+
+  .timeline-table { min-width: 520px; }
+
+  .timeline-table td.hit {
+    background: var(--green-bg);
+    color: var(--green-bright);
+    font-weight: 700;
+  }
+
+  .timeline-table td.current-col { background: var(--blue-light); }
+  .timeline-table td.current-col.hit { background: var(--green-bg); }
+
+  thead th.current-col { background: var(--blue-light); }
+
+  /* Section toggle (hide/show panels) */
+  .hidden { display: none !important; }
+
+  footer {
+    margin-top: 48px;
+    text-align: center;
+    font-size: 12px;
+    color: var(--text-muted);
+    border-top: 1px solid var(--border);
+    padding-top: 24px;
+  }
+
+  .check { color: var(--green-bright); font-size: 14px; }
+  .cross { color: var(--text-muted); font-size: 14px; }
+
+  /* Input group label for tab 2 */
+  .input-group-label {
+    font-size: 11px;
+    font-weight: 700;
+    color: var(--text-muted);
+    text-transform: uppercase;
+    letter-spacing: 0.07em;
+    margin: 18px 0 12px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+
+  .input-group-label:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-brand">
+    <div class="topbar-logo">
+      <svg viewBox="0 0 18 18" fill="none" width="18" height="18" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="9" width="4" height="7" rx="1" fill="white" opacity="0.6"/>
+        <rect x="7" y="5" width="4" height="11" rx="1" fill="white" opacity="0.8"/>
+        <rect x="12" y="2" width="4" height="14" rx="1" fill="white"/>
+      </svg>
+    </div>
+    <span class="topbar-name">Capresta Corporation</span>
+  </div>
+  <span class="topbar-right">REP EARNINGS CALCULATOR — CAD</span>
+</div>
+
+<div class="app">
+
+  <div class="page-header">
+    <h1>Sales Rep Earnings Calculator</h1>
+    <p>Based on the full Capresta compensation structure. All figures in Canadian dollars.</p>
+  </div>
+
+  <!-- Tab navigation -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('tab1', this)">Earnings Calculator</button>
+    <button class="tab-btn" onclick="switchTab('tab2', this)">Calls to Target</button>
+  </div>
+
+  <!-- ===================== TAB 1 ===================== -->
+  <div class="tab-panel active" id="tab1">
+  <div class="layout">
+
+    <!-- Left: Inputs -->
+    <div style="position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px;">
+
+      <div class="panel">
+        <div class="panel-title">Monthly activity inputs</div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Jobs completed this month</span>
+            <span class="slider-value" id="v-jobs">4</span>
+          </div>
+          <input type="range" min="0" max="60" value="4" step="1" id="s-jobs">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">New realtor partners signed</span>
+            <span class="slider-value" id="v-newpartners">2</span>
+          </div>
+          <input type="range" min="0" max="15" value="2" step="1" id="s-newpartners">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Total active partners (territory)</span>
+            <span class="slider-value" id="v-activepartners">2</span>
+          </div>
+          <input type="range" min="0" max="60" value="2" step="1" id="s-activepartners">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Repeat jobs (from existing realtors)</span>
+            <span class="slider-value" id="v-repeatjobs">2</span>
+          </div>
+          <input type="range" min="0" max="60" value="2" step="1" id="s-repeatjobs">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">Auto-capped at total jobs. Every job beyond new-partner jobs earns 25% commission.</div>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Capresta margin per job (avg)</span>
+            <span class="slider-value" id="v-margin">$800</span>
+          </div>
+          <input type="range" min="300" max="2500" value="800" step="50" id="s-margin">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Is this your first ever job?</span>
+            <span class="slider-value" id="v-firstever">No</span>
+          </div>
+          <input type="range" min="0" max="1" value="0" step="1" id="s-firstever">
+        </div>
+
+        <!-- Bonus toggle -->
+        <div class="divider"></div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Include bonuses</div>
+            <div class="toggle-label-sub">Volume, speed &amp; streak bonuses</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="toggle-bonuses" onchange="render()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+
+        <!-- Bonus-specific inputs (shown when toggle is ON) -->
+        <div class="bonus-inputs" id="bonus-inputs">
+          <div class="bonus-section-label">Bonus inputs</div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span class="slider-label">New realtors with first job within 7 days</span>
+              <span class="slider-value" id="v-fastfirst">0</span>
+            </div>
+            <input type="range" min="0" max="15" value="0" step="1" id="s-fastfirst">
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">+$50 each. Capped at new partners signed.</div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span class="slider-label">New realtors with 3 jobs in first 30 days</span>
+              <span class="slider-value" id="v-hotstart">0</span>
+            </div>
+            <input type="range" min="0" max="15" value="0" step="1" id="s-hotstart">
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">+$75 each. Stacks with fast first job bonus.</div>
+          </div>
+
+          <div class="slider-group">
+            <div class="slider-header">
+              <span class="slider-label">Months hitting target in a row (streak)</span>
+              <span class="slider-value" id="v-streak">0</span>
+            </div>
+            <input type="range" min="0" max="6" value="0" step="1" id="s-streak">
+            <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">2mo +$300 · 3mo +$500 · 6mo +$1,200 (stacking)</div>
+          </div>
+        </div>
+
+        <div class="input-note" style="margin-top:16px;">
+          Repeat jobs must be &le; total jobs. Active partners &ge; new partners.
+        </div>
+      </div>
+
+      <!-- Comp reference card -->
+      <div class="panel">
+        <div class="panel-title">Comp structure reference</div>
+        <div class="comp-table-wrap">
+          <table class="comp-ref">
+            <thead><tr><th>Trigger</th><th style="text-align:right">Amount</th></tr></thead>
+            <tbody>
+              <tr><td>First job bonus (per new realtor)</td><td style="text-align:right">$80</td></tr>
+              <tr><td>First ever job bonus (one-time)</td><td style="text-align:right">+$100</td></tr>
+              <tr><td>Repeat commission</td><td style="text-align:right">25% of margin</td></tr>
+              <tr><td>Fast first job (within 7 days)</td><td style="text-align:right">+$50/realtor</td></tr>
+              <tr><td>Hot start (3 jobs in 30 days)</td><td style="text-align:right">+$75/realtor</td></tr>
+              <tr><td>Volume bonus — 5 jobs/mo</td><td style="text-align:right">$150</td></tr>
+              <tr><td>Volume bonus — 10 jobs/mo</td><td style="text-align:right">$350</td></tr>
+              <tr><td>Volume bonus — 15 jobs/mo</td><td style="text-align:right">$500</td></tr>
+              <tr><td>Volume bonus — 20 jobs/mo</td><td style="text-align:right">$800</td></tr>
+              <tr><td>Volume bonus — 25 jobs/mo</td><td style="text-align:right">$1,200</td></tr>
+              <tr><td>Volume bonus — 30+ jobs/mo</td><td style="text-align:right">$2,000</td></tr>
+              <tr><td>2-month streak</td><td style="text-align:right">+$300</td></tr>
+              <tr><td>3-month streak</td><td style="text-align:right">+$500</td></tr>
+              <tr><td>6-month streak</td><td style="text-align:right">+$1,200</td></tr>
+              <tr><td>Milestone: 40 partners</td><td style="text-align:right">+10% (35% total)</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Output -->
+    <div class="right-col">
+
+      <!-- Hero banner -->
+      <div class="earnings-hero">
+        <div class="hero-left">
+          <div class="hero-label" id="hero-label">Total earnings this month</div>
+          <div class="hero-value" id="hero-total">$0</div>
+          <div class="hero-sub" id="hero-sub">Adjust inputs to calculate</div>
+        </div>
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="hs-lbl">Annualized</div>
+            <div class="hs-val" id="hero-annual">$0</div>
+          </div>
+          <div class="hero-stat">
+            <div class="hs-lbl">Repeat comm.</div>
+            <div class="hs-val" id="hero-repeat">$0</div>
+          </div>
+          <div class="hero-stat" id="hero-bonuses-stat">
+            <div class="hs-lbl">Bonuses</div>
+            <div class="hs-val" id="hero-bonuses">$0</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- KPI cards -->
+      <div class="kpi-grid two-col" id="kpi-grid">
+        <div class="kpi">
+          <div class="kpi-label">First job bonuses</div>
+          <div class="kpi-value" id="kpi-firstjob">$0</div>
+          <div class="kpi-sub" id="kpi-firstjob-sub">0 new realtors × $80</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Repeat commission</div>
+          <div class="kpi-value" id="kpi-repeat">$0</div>
+          <div class="kpi-sub" id="kpi-repeat-sub">25% on 0 jobs</div>
+        </div>
+        <div class="kpi hidden" id="kpi-volume-card">
+          <div class="kpi-label">Volume bonus</div>
+          <div class="kpi-value" id="kpi-volume">$0</div>
+          <div class="kpi-sub" id="kpi-volume-sub">Need 5+ jobs</div>
+        </div>
+        <div class="kpi green-card hidden" id="kpi-other-card">
+          <div class="kpi-label">Speed &amp; streak bonuses</div>
+          <div class="kpi-value" id="kpi-other">$0</div>
+          <div class="kpi-sub" id="kpi-other-sub">Fast first job + hot start + streak</div>
+        </div>
+      </div>
+
+      <!-- Detailed breakdown (bonus toggle ON only) -->
+      <div class="panel hidden" id="breakdown-panel">
+        <div class="panel-title">Full monthly earnings breakdown</div>
+        <table>
+          <thead><tr><th>Earnings component</th><th>Calculation</th><th>Earned</th><th>Status</th></tr></thead>
+          <tbody id="breakdown-body"></tbody>
+        </table>
+      </div>
+
+      <!-- Milestone tracker (bonus toggle ON only) -->
+      <div class="panel hidden" id="milestone-panel">
+        <div class="panel-title">Bonus progress tracker</div>
+        <div class="milestone-grid" id="milestone-grid"></div>
+      </div>
+
+      <!-- Month-over-month projection (always visible) -->
+      <div class="panel">
+        <div class="panel-title">If you maintain this pace — monthly projections</div>
+        <table>
+          <thead><tr><th>Scenario</th><th>Jobs/mo</th><th>New partners/mo</th><th>Repeat comm.</th><th>Bonuses</th><th>Total/mo</th><th>Annual</th></tr></thead>
+          <tbody id="projection-body"></tbody>
+        </table>
+      </div>
+
+    </div>
+  </div>
+  </div><!-- end tab1 -->
+
+  <!-- ===================== TAB 2 ===================== -->
+  <div class="tab-panel" id="tab2">
+  <div class="layout">
+
+    <!-- Left: Inputs -->
+    <div style="position: sticky; top: 20px; display: flex; flex-direction: column; gap: 16px;">
+
+      <div class="panel">
+        <div class="panel-title">Calls to target — inputs</div>
+
+        <div class="input-group-label">Your goal</div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Target monthly earnings</span>
+            <span class="slider-value" id="t2-v-target">$2,000</span>
+          </div>
+          <input type="range" min="500" max="10000" value="2000" step="100" id="t2-s-target">
+        </div>
+
+        <div class="input-group-label">Calling stats</div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Calls per month</span>
+            <span class="slider-value" id="t2-v-calls">60</span>
+          </div>
+          <input type="range" min="10" max="300" value="60" step="5" id="t2-s-calls">
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Call-to-sign rate</span>
+            <span class="slider-value" id="t2-v-ctosign">10%</span>
+          </div>
+          <input type="range" min="2" max="50" value="10" step="1" id="t2-s-ctosign">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">% of calls that result in a signed realtor</div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Sign-to-first-job rate</span>
+            <span class="slider-value" id="t2-v-stojob">60%</span>
+          </div>
+          <input type="range" min="20" max="100" value="60" step="5" id="t2-s-stojob">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">% of signed realtors who complete a first job</div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Avg weeks from signing to first job</span>
+            <span class="slider-value" id="t2-v-delay">3 wks</span>
+          </div>
+          <input type="range" min="1" max="12" value="3" step="1" id="t2-s-delay">
+        </div>
+
+        <div class="input-group-label">Portfolio stats</div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Monthly partner retention rate</span>
+            <span class="slider-value" id="t2-v-retention">70%</span>
+          </div>
+          <input type="range" min="30" max="100" value="70" step="5" id="t2-s-retention">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">% of active partners who stay active each month</div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Avg repeat jobs per active partner/mo</span>
+            <span class="slider-value" id="t2-v-rjpp">0.5</span>
+          </div>
+          <input type="range" min="1" max="20" value="5" step="1" id="t2-s-rjpp">
+          <div style="font-size:11px;color:var(--text-muted);margin-top:4px;">How often existing partners book each month</div>
+        </div>
+
+        <div class="slider-group">
+          <div class="slider-header">
+            <span class="slider-label">Avg Capresta margin per job</span>
+            <span class="slider-value" id="t2-v-margin">$800</span>
+          </div>
+          <input type="range" min="300" max="2500" value="800" step="50" id="t2-s-margin">
+        </div>
+
+        <!-- Bonus toggle for tab 2 -->
+        <div class="divider"></div>
+        <div class="toggle-row">
+          <div>
+            <div class="toggle-label">Include volume bonuses</div>
+            <div class="toggle-label-sub">Adds volume bonus to projected earnings</div>
+          </div>
+          <label class="toggle-switch">
+            <input type="checkbox" id="t2-toggle-bonuses" onchange="renderTab2()">
+            <span class="toggle-track"></span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <!-- Right: Output -->
+    <div class="right-col">
+
+      <!-- Hero -->
+      <div class="target-hero">
+        <div class="hero-label">Calls to target — projection</div>
+        <div class="hero-main" id="t2-hero-main">Adjust inputs to see your timeline</div>
+        <div class="hero-sub" id="t2-hero-sub"></div>
+      </div>
+
+      <!-- Funnel KPI cards -->
+      <div class="kpi-grid" style="grid-template-columns: repeat(4,1fr);">
+        <div class="kpi">
+          <div class="kpi-label">Signings / mo</div>
+          <div class="kpi-value" id="t2-kpi-signings">—</div>
+          <div class="kpi-sub" id="t2-kpi-signings-sub">calls × sign rate</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">First jobs / mo</div>
+          <div class="kpi-value" id="t2-kpi-firstjobs">—</div>
+          <div class="kpi-sub" id="t2-kpi-firstjobs-sub">after conversion delay</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-label">Active partners</div>
+          <div class="kpi-value" id="t2-kpi-partners">—</div>
+          <div class="kpi-sub">at month 12</div>
+        </div>
+        <div class="kpi green-card">
+          <div class="kpi-label">Steady-state / mo</div>
+          <div class="kpi-value" id="t2-kpi-steady">—</div>
+          <div class="kpi-sub">at month 18</div>
+        </div>
+      </div>
+
+      <!-- Timeline table -->
+      <div class="panel">
+        <div class="panel-title">Monthly earnings timeline — 4 call volume scenarios</div>
+        <div class="timeline-wrap">
+          <table class="timeline-table">
+            <thead id="t2-thead"></thead>
+            <tbody id="t2-tbody"></tbody>
+          </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </div><!-- end tab2 -->
+
+  <footer>
+    Capresta Corporation &nbsp;&nbsp;|&nbsp;&nbsp; Rep Earnings Calculator v2.0 &nbsp;&nbsp;|&nbsp;&nbsp; All figures in CAD
+  </footer>
+</div>
+
+<script>
+// ─── Tab switching ───────────────────────────────────────────────
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  btn.classList.add('active');
+  if (id === 'tab2') renderTab2();
+}
+
+// ─── Formatting helpers ──────────────────────────────────────────
+function cad(n) { return '$' + Math.round(Math.abs(n)).toLocaleString(); }
+function cadK(n) {
+  const abs = Math.abs(n);
+  const sign = n < 0 ? '-' : '';
+  if (abs >= 1000000) return sign + '$' + (abs/1000000).toFixed(2) + 'M';
+  if (abs >= 1000)    return sign + '$' + (abs/1000).toFixed(1) + 'K';
+  return sign + '$' + Math.round(abs).toLocaleString();
+}
+function get(id) { return +document.getElementById(id).value; }
+function pct(id) { return get(id) / 100; }
+
+// ─── TAB 1 ──────────────────────────────────────────────────────
+
+const sliderDefs = [
+  { sid:'s-jobs',           vid:'v-jobs',           fmt: v => v },
+  { sid:'s-newpartners',    vid:'v-newpartners',    fmt: v => v },
+  { sid:'s-activepartners', vid:'v-activepartners', fmt: v => v },
+  { sid:'s-repeatjobs',     vid:'v-repeatjobs',     fmt: v => v },
+  { sid:'s-margin',         vid:'v-margin',         fmt: v => '$' + Number(v).toLocaleString() },
+  { sid:'s-firstever',      vid:'v-firstever',      fmt: v => v==='1'||+v===1 ? 'Yes' : 'No' },
+  { sid:'s-fastfirst',      vid:'v-fastfirst',      fmt: v => v },
+  { sid:'s-hotstart',       vid:'v-hotstart',       fmt: v => v },
+  { sid:'s-streak',         vid:'v-streak',         fmt: v => v + ' mo' },
+];
+
+sliderDefs.forEach(({ sid, vid, fmt }) => {
+  const el = document.getElementById(sid);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    document.getElementById(vid).textContent = fmt(el.value);
+    render();
+  });
+});
+
+function volumeBonus(jobs) {
+  if (jobs >= 30) return { bonus: 2000, tier: '30+ jobs' };
+  if (jobs >= 25) return { bonus: 1200, tier: '25 jobs' };
+  if (jobs >= 20) return { bonus:  800, tier: '20 jobs' };
+  if (jobs >= 15) return { bonus:  500, tier: '15 jobs' };
+  if (jobs >= 10) return { bonus:  350, tier: '10 jobs' };
+  if (jobs >= 5)  return { bonus:  150, tier: '5 jobs'  };
+  return { bonus: 0, tier: '' };
+}
+
+function streakBonus(streak) {
+  if (streak >= 6) return 300 + 500 + 1200;
+  if (streak >= 3) return 300 + 500;
+  if (streak >= 2) return 300;
+  return 0;
+}
+
+function calcEarnings(jobs, newPartners, activePartners, repeatJobs, margin, isFirstEver, includeBonuses, fastFirst, hotStart, streak) {
+  const firstJobBonus  = newPartners * 80;
+  const firstEverBonus = isFirstEver ? 100 : 0;
+  const repeatCommRate = activePartners >= 40 ? 0.35 : 0.25;
+  const repeatComm     = repeatJobs * margin * repeatCommRate;
+
+  let vol = { bonus: 0, tier: '' };
+  let speedBonus  = 0;
+  let strkBonus   = 0;
+
+  if (includeBonuses) {
+    vol       = volumeBonus(jobs);
+    speedBonus = (Math.min(fastFirst, newPartners) * 50) + (Math.min(hotStart, newPartners) * 75);
+    strkBonus = streakBonus(streak);
+  }
+
+  const bonusTotal = vol.bonus + speedBonus + strkBonus;
+  const total = firstJobBonus + firstEverBonus + repeatComm + bonusTotal;
+
+  return {
+    firstJobBonus, firstEverBonus, repeatComm, repeatCommRate,
+    volumeBonus: vol.bonus, volumeTier: vol.tier,
+    speedBonus, strkBonus, bonusTotal, total,
+    jobs, newPartners, activePartners, repeatJobs, margin, isFirstEver
+  };
+}
+
+function render() {
+  const jobs           = get('s-jobs');
+  const newPartners    = get('s-newpartners');
+  const activePartners = get('s-activepartners');
+  const repeatJobs     = Math.min(get('s-repeatjobs'), jobs);
+  const margin         = get('s-margin');
+  const isFirstEver    = get('s-firstever') === 1;
+  const includeBonuses = document.getElementById('toggle-bonuses').checked;
+  const fastFirst      = get('s-fastfirst');
+  const hotStart       = get('s-hotstart');
+  const streak         = get('s-streak');
+
+  // Sync repeat jobs label
+  document.getElementById('v-repeatjobs').textContent = repeatJobs;
+
+  // Clamp fast/hot sliders to newPartners
+  const ffEl = document.getElementById('s-fastfirst');
+  const hsEl = document.getElementById('s-hotstart');
+  ffEl.max = newPartners;
+  hsEl.max = newPartners;
+  if (+ffEl.value > newPartners) { ffEl.value = newPartners; document.getElementById('v-fastfirst').textContent = newPartners; }
+  if (+hsEl.value > newPartners) { hsEl.value = newPartners; document.getElementById('v-hotstart').textContent = newPartners; }
+
+  // Show/hide bonus inputs
+  document.getElementById('bonus-inputs').classList.toggle('visible', includeBonuses);
+
+  const e = calcEarnings(jobs, newPartners, activePartners, repeatJobs, margin, isFirstEver, includeBonuses, fastFirst, hotStart, streak);
+
+  // Hero
+  document.getElementById('hero-label').textContent = includeBonuses ? 'Total earnings this month (with bonuses)' : 'Base earnings this month';
+  document.getElementById('hero-total').textContent = cad(e.total);
+  document.getElementById('hero-annual').textContent = cadK(e.total * 12);
+  document.getElementById('hero-repeat').textContent = cad(e.repeatComm);
+  document.getElementById('hero-bonuses').textContent = cad(e.bonusTotal);
+  document.getElementById('hero-bonuses-stat').classList.toggle('hidden', !includeBonuses);
+  document.getElementById('hero-sub').textContent = includeBonuses
+    ? `${jobs} jobs · ${newPartners} new partners · ${activePartners} active · bonuses included`
+    : `${jobs} jobs completed · ${newPartners} new partners · ${activePartners} total active`;
+
+  // KPI cards
+  const kpiGrid = document.getElementById('kpi-grid');
+  kpiGrid.classList.toggle('two-col', !includeBonuses);
+  document.getElementById('kpi-volume-card').classList.toggle('hidden', !includeBonuses);
+  document.getElementById('kpi-other-card').classList.toggle('hidden', !includeBonuses);
+
+  document.getElementById('kpi-firstjob').textContent = cad(e.firstJobBonus + e.firstEverBonus);
+  document.getElementById('kpi-firstjob-sub').textContent = `${newPartners} new realtors × $80${isFirstEver ? ' + $100 first-ever' : ''}`;
+  document.getElementById('kpi-repeat').textContent = cad(e.repeatComm);
+  document.getElementById('kpi-repeat-sub').textContent = `${Math.round(e.repeatCommRate*100)}% on ${repeatJobs} repeat job${repeatJobs!==1?'s':''}`;
+  document.getElementById('kpi-volume').textContent = cad(e.volumeBonus);
+  document.getElementById('kpi-volume-sub').textContent = e.volumeTier ? `Tier: ${e.volumeTier}` : 'Need 5+ jobs';
+  document.getElementById('kpi-other').textContent = cad(e.speedBonus + e.strkBonus);
+  document.getElementById('kpi-other-sub').textContent = `Speed $${Math.round(e.speedBonus).toLocaleString()} + Streak $${Math.round(e.strkBonus).toLocaleString()}`;
+
+  // Show/hide bonus panels
+  document.getElementById('breakdown-panel').classList.toggle('hidden', !includeBonuses);
+  document.getElementById('milestone-panel').classList.toggle('hidden', !includeBonuses);
+
+  if (includeBonuses) {
+    // Breakdown table
+    const clampedFastFirst = Math.min(fastFirst, newPartners);
+    const clampedHotStart  = Math.min(hotStart, newPartners);
+    const rows = [
+      {
+        label: 'First job bonus',
+        calc: `${newPartners} new realtors × $80`,
+        earned: e.firstJobBonus,
+        status: newPartners > 0 ? 'earned' : 'none'
+      },
+      {
+        label: 'First ever close bonus',
+        calc: 'One-time +$100 (first job ever)',
+        earned: e.firstEverBonus,
+        status: isFirstEver ? 'earned' : 'na'
+      },
+      {
+        label: `Repeat commission (${Math.round(e.repeatCommRate*100)}%)`,
+        calc: `${repeatJobs} jobs × $${margin.toLocaleString()} × ${Math.round(e.repeatCommRate*100)}%`,
+        earned: e.repeatComm,
+        status: repeatJobs > 0 ? 'earned' : 'none'
+      },
+      {
+        label: 'Volume bonus',
+        calc: e.volumeTier ? `${e.volumeTier} → ${cad(e.volumeBonus)}` : `Need ${5-jobs > 0 ? 5-jobs : 1} more job${5-jobs!==1?'s':''} for $150`,
+        earned: e.volumeBonus,
+        status: e.volumeBonus > 0 ? 'earned' : 'none'
+      },
+      {
+        label: 'Fast first job',
+        calc: `${clampedFastFirst} realtors × $50`,
+        earned: clampedFastFirst * 50,
+        status: clampedFastFirst > 0 ? 'earned' : 'none'
+      },
+      {
+        label: 'Hot start bonus',
+        calc: `${clampedHotStart} realtors × $75`,
+        earned: clampedHotStart * 75,
+        status: clampedHotStart > 0 ? 'earned' : 'none'
+      },
+      {
+        label: 'Consistency streak',
+        calc: streak >= 6 ? '6-month streak → $2,000' : streak >= 3 ? '3-month streak → $800' : streak >= 2 ? '2-month streak → $300' : 'No streak yet',
+        earned: e.strkBonus,
+        status: e.strkBonus > 0 ? 'earned' : 'none'
+      },
+      { label: 'TOTAL', calc: '', earned: e.total, status: 'total', isTotal: true }
+    ];
+
+    document.getElementById('breakdown-body').innerHTML = rows.map(r => {
+      let statusBadge = '';
+      if (r.status === 'earned') statusBadge = '<span class="bonus-badge badge-green">&#10003; Earned</span>';
+      else if (r.status === 'none') statusBadge = '<span class="bonus-badge badge-gray">Not met</span>';
+      else if (r.status === 'na')   statusBadge = '<span class="bonus-badge badge-gray">N/A</span>';
+
+      if (r.isTotal) {
+        return `<tr>
+          <td class="strong sep" style="font-size:14px">${r.label}</td>
+          <td class="sep"></td>
+          <td class="gold sep" style="font-size:16px">${cad(r.earned)}</td>
+          <td class="sep"></td>
+        </tr>`;
+      }
+      return `<tr>
+        <td class="${r.earned > 0 ? 'strong' : 'dim'}">${r.label}</td>
+        <td class="dim">${r.calc}</td>
+        <td class="${r.earned > 0 ? 'pos' : 'zero'}">${r.earned > 0 ? cad(r.earned) : '—'}</td>
+        <td>${statusBadge}</td>
+      </tr>`;
+    }).join('');
+
+    // Milestone / bonus progress grid
+    const volTiers = [
+      { target: 5,  bonus: '$150'   },
+      { target: 10, bonus: '$350'   },
+      { target: 15, bonus: '$500'   },
+      { target: 20, bonus: '$800'   },
+      { target: 25, bonus: '$1,200' },
+      { target: 30, bonus: '$2,000' },
+    ];
+
+    const streakTiers = [
+      { target: 2, bonus: '+$300',   label: '2-month streak' },
+      { target: 3, bonus: '+$500',   label: '3-month streak' },
+      { target: 6, bonus: '+$1,200', label: '6-month streak' },
+    ];
+
+    let milestoneHTML = '';
+
+    volTiers.forEach(t => {
+      const achieved = jobs >= t.target;
+      const pctFill  = Math.min(100, Math.round(jobs / t.target * 100));
+      milestoneHTML += `<div class="milestone-card ${achieved ? 'achieved' : ''}">
+        <div class="mc-label">Volume: ${t.target}${t.target===30?'+':''} jobs</div>
+        <div class="mc-desc">Complete ${t.target}${t.target===30?'+':''} jobs in a calendar month</div>
+        ${achieved
+          ? `<div class="mc-achieved">&#10003; Achieved — ${t.bonus}</div>`
+          : `<div class="progress-track"><div class="progress-fill" style="width:${pctFill}%"></div></div>
+             <div class="progress-labels"><span>${jobs} / ${t.target}</span><span>${pctFill}%</span></div>
+             <div class="mc-bonus">${t.bonus} when reached</div>`
+        }
+      </div>`;
+    });
+
+    streakTiers.forEach(t => {
+      const achieved = streak >= t.target;
+      const pctFill  = Math.min(100, Math.round(streak / t.target * 100));
+      milestoneHTML += `<div class="milestone-card ${achieved ? 'achieved' : ''}">
+        <div class="mc-label">${t.label}</div>
+        <div class="mc-desc">Hit your monthly target ${t.target} months in a row</div>
+        ${achieved
+          ? `<div class="mc-achieved">&#10003; Achieved — ${t.bonus}</div>`
+          : `<div class="progress-track"><div class="progress-fill" style="width:${pctFill}%"></div></div>
+             <div class="progress-labels"><span>${streak} / ${t.target} mo</span><span>${pctFill}%</span></div>
+             <div class="mc-bonus">${t.bonus} when reached</div>`
+        }
+      </div>`;
+    });
+
+    // Speed bonuses (earned/not status)
+    const speedItems = [
+      { label: 'Fast first job', desc: 'First job within 7 days of signing', earned: clampedFastFirst > 0, amount: clampedFastFirst * 50, detail: `${clampedFastFirst} × $50` },
+      { label: 'Hot start',      desc: '3 jobs in first 30 days with new realtor', earned: clampedHotStart > 0, amount: clampedHotStart * 75, detail: `${clampedHotStart} × $75` },
+    ];
+
+    speedItems.forEach(s => {
+      milestoneHTML += `<div class="milestone-card ${s.earned ? 'achieved' : ''}">
+        <div class="mc-label">${s.label}</div>
+        <div class="mc-desc">${s.desc}</div>
+        ${s.earned
+          ? `<div class="mc-achieved">&#10003; ${s.detail} = ${cad(s.amount)}</div>`
+          : `<div class="mc-bonus" style="margin-top:4px;">Set the slider above to count earned realtors</div>`
+        }
+      </div>`;
+    });
+
+    document.getElementById('milestone-grid').innerHTML = milestoneHTML;
+  }
+
+  // Projections (always visible, respect toggle)
+  const projScenarios = [
+    { label: 'Current pace', j: jobs, np: newPartners, ap: activePartners, rj: repeatJobs },
+    { label: 'Push to 5 jobs',  j: Math.max(jobs,5),  np: newPartners, ap: Math.max(activePartners,3), rj: Math.max(repeatJobs, Math.max(jobs,5)-newPartners) },
+    { label: 'Push to 10 jobs', j: Math.max(jobs,10), np: newPartners+1, ap: Math.max(activePartners,5), rj: Math.max(jobs,10)-newPartners-1 },
+    { label: 'Push to 15 jobs', j: Math.max(jobs,15), np: newPartners+2, ap: Math.max(activePartners,8), rj: Math.max(jobs,15)-newPartners-2 },
+    { label: 'Push to 20 jobs', j: Math.max(jobs,20), np: newPartners+2, ap: Math.max(activePartners,10), rj: Math.max(jobs,20)-newPartners-2 },
+  ];
+
+  document.getElementById('projection-body').innerHTML = projScenarios.map((sc, i) => {
+    const rj = Math.max(0, Math.min(sc.rj, sc.j));
+    const pe = calcEarnings(sc.j, sc.np, Math.max(sc.ap, sc.np), rj, margin, false, includeBonuses, 0, 0, streak);
+    const isActive = i === 0;
+    return `<tr style="${isActive ? 'background:#eff4ff' : ''}">
+      <td class="${isActive ? 'strong blue' : 'strong'}">${sc.label}${isActive ? ' ◀' : ''}</td>
+      <td>${sc.j}</td>
+      <td>${sc.np}</td>
+      <td class="pos">${cad(pe.repeatComm)}</td>
+      <td class="pos">${cad(pe.bonusTotal)}</td>
+      <td class="gold" style="font-weight:700">${cad(pe.total)}</td>
+      <td class="pos">${cadK(pe.total * 12)}</td>
+    </tr>`;
+  }).join('');
+}
+
+// ─── TAB 2 ──────────────────────────────────────────────────────
+
+const t2sliders = [
+  { sid:'t2-s-target',    vid:'t2-v-target',    fmt: v => '$' + Number(v).toLocaleString() },
+  { sid:'t2-s-calls',     vid:'t2-v-calls',     fmt: v => v },
+  { sid:'t2-s-ctosign',   vid:'t2-v-ctosign',   fmt: v => v + '%' },
+  { sid:'t2-s-stojob',    vid:'t2-v-stojob',    fmt: v => v + '%' },
+  { sid:'t2-s-delay',     vid:'t2-v-delay',     fmt: v => v + ' wks' },
+  { sid:'t2-s-retention', vid:'t2-v-retention', fmt: v => v + '%' },
+  { sid:'t2-s-rjpp',      vid:'t2-v-rjpp',      fmt: v => (v/10).toFixed(1) },
+  { sid:'t2-s-margin',    vid:'t2-v-margin',    fmt: v => '$' + Number(v).toLocaleString() },
+];
+
+t2sliders.forEach(({ sid, vid, fmt }) => {
+  const el = document.getElementById(sid);
+  if (!el) return;
+  el.addEventListener('input', () => {
+    document.getElementById(vid).textContent = fmt(el.value);
+    renderTab2();
+  });
+});
+
+function runSimulation(callsPerMonth, params) {
+  // params: { ctosign, stojob, delayWeeks, retention, rjpp, margin, includeBonuses }
+  const MONTHS = 18;
+  const { ctosign, stojob, delayWeeks, retention, rjpp, margin, includeBonuses } = params;
+
+  // We model signing queue: signings made in month M produce first jobs in month M + delayMonths
+  const delayMonths = Math.round(delayWeeks / 4.33);
+
+  let activePartners = 0;
+  // queue[i] = number of first jobs expected i months from now
+  let queue = new Array(delayMonths + 1).fill(0);
+
+  const results = [];
+
+  for (let m = 0; m < MONTHS; m++) {
+    // Signings this month
+    const signings = callsPerMonth * ctosign;
+    // First jobs arriving this month (from the queue head)
+    const firstJobs = Math.round(queue[0] || 0);
+
+    // Advance queue
+    queue.shift();
+    queue.push(signings * stojob);
+
+    // Update active partners
+    activePartners = activePartners * retention + firstJobs;
+
+    // Repeat jobs (active partners × rate, exclude firstJobs which are counted separately)
+    const repeatJobs = Math.max(0, activePartners * rjpp - firstJobs);
+
+    const firstJobBonus = firstJobs * 80;
+    const repeatComm    = repeatJobs * margin * 0.25;
+    const totalJobs     = firstJobs + repeatJobs;
+    const vb            = includeBonuses ? volumeBonus(totalJobs).bonus : 0;
+    const earnings      = firstJobBonus + repeatComm + vb;
+
+    results.push({ month: m + 1, earnings, activePartners: Math.round(activePartners), firstJobs, repeatJobs: Math.round(repeatJobs) });
+  }
+
+  return results;
+}
+
+function renderTab2() {
+  const target      = get('t2-s-target');
+  const calls       = get('t2-s-calls');
+  const ctosign     = pct('t2-s-ctosign');
+  const stojob      = pct('t2-s-stojob');
+  const delayWeeks  = get('t2-s-delay');
+  const retention   = pct('t2-s-retention');
+  const rjpp        = get('t2-s-rjpp') / 10;
+  const margin      = get('t2-s-margin');
+  const includeBonuses = document.getElementById('t2-toggle-bonuses').checked;
+
+  const params = { ctosign, stojob, delayWeeks, retention, rjpp, margin, includeBonuses };
+
+  const scenarios = [
+    { label: '½ calls',   calls: Math.round(calls * 0.5), isCurrent: false },
+    { label: 'Current',   calls: calls,                   isCurrent: true  },
+    { label: '1.5× calls',calls: Math.round(calls * 1.5), isCurrent: false },
+    { label: '2× calls',  calls: calls * 2,               isCurrent: false },
+  ];
+
+  const simResults = scenarios.map(sc => ({
+    ...sc,
+    data: runSimulation(sc.calls, params)
+  }));
+
+  // KPI cards (based on current scenario)
+  const cur = simResults[1].data;
+  const signingsPerMonth = Math.round(calls * ctosign * 10) / 10;
+  const firstJobsMonth6  = Math.round(cur[5] ? cur[5].firstJobs * 10 / 10 : 0);
+  document.getElementById('t2-kpi-signings').textContent = signingsPerMonth.toFixed(1);
+  document.getElementById('t2-kpi-signings-sub').textContent = `${calls} calls × ${Math.round(ctosign*100)}%`;
+  document.getElementById('t2-kpi-firstjobs').textContent = firstJobsMonth6.toFixed(1) + '/mo';
+  document.getElementById('t2-kpi-firstjobs-sub').textContent = `~${delayWeeks}wk delay · ${Math.round(stojob*100)}% convert`;
+  document.getElementById('t2-kpi-partners').textContent = cur[11] ? Math.round(cur[11].activePartners) : '—';
+  document.getElementById('t2-kpi-steady').textContent = cur[17] ? cad(cur[17].earnings) : '—';
+
+  // Hero
+  const currentSim = simResults[1].data;
+  const hitMonth   = currentSim.findIndex(r => r.earnings >= target);
+  if (hitMonth >= 0) {
+    document.getElementById('t2-hero-main').innerHTML =
+      `At your current call volume, you hit <span>${cad(target)}/mo</span> in <span>Month ${hitMonth + 1}</span>`;
+    document.getElementById('t2-hero-sub').textContent =
+      `Steady-state earnings (month 18): ${cad(currentSim[17].earnings)}/mo`;
+  } else {
+    document.getElementById('t2-hero-main').innerHTML =
+      `You don't reach <span>${cad(target)}/mo</span> within 18 months at this pace`;
+    document.getElementById('t2-hero-sub').textContent =
+      `Month 18 earnings: ${cad(currentSim[17].earnings)}/mo — try increasing calls or conversion rates`;
+  }
+
+  // Timeline table
+  const thead = document.getElementById('t2-thead');
+  const tbody  = document.getElementById('t2-tbody');
+
+  thead.innerHTML = `<tr>
+    <th>Month</th>
+    ${scenarios.map(sc => `<th class="${sc.isCurrent ? 'current-col' : ''}">${sc.label}${sc.isCurrent ? ' ◀' : ''}<br><small style="font-weight:400;font-size:10px;opacity:0.7">${sc.calls} calls/mo</small></th>`).join('')}
+  </tr>`;
+
+  // Track which months each scenario first hits target
+  const firstHit = simResults.map(sc => sc.data.findIndex(r => r.earnings >= target));
+
+  tbody.innerHTML = Array.from({ length: 18 }, (_, i) => {
+    const month = i + 1;
+    const cells = simResults.map((sc, si) => {
+      const row      = sc.data[i];
+      const isHit    = firstHit[si] === i;
+      const isCurCol = sc.isCurrent;
+      const classes  = [isHit ? 'hit' : '', isCurCol ? 'current-col' : ''].filter(Boolean).join(' ');
+      return `<td class="${classes}">${cad(row.earnings)}${isHit ? ' ✓' : ''}</td>`;
+    }).join('');
+    return `<tr><td class="strong">${month}</td>${cells}</tr>`;
+  }).join('');
+}
+
+// Initial render
+render();
+renderTab2();
+</script>
+</body>
+</html>
