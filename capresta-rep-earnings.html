@@ -54,14 +54,6 @@ body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-
 .page-header h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--navy);letter-spacing:-.02em}
 .page-header p{font-size:12px;color:var(--text-3);margin-top:3px}
 
-/* Tabs */
-.tab-nav{display:flex;gap:2px;margin-bottom:18px;border-bottom:2px solid var(--border)}
-.tab-btn{padding:8px 18px;border:none;background:none;font-family:'Inter',sans-serif;font-size:13px;font-weight:600;color:var(--text-3);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;border-radius:var(--r) var(--r) 0 0;transition:all .15s}
-.tab-btn:hover{color:var(--navy);background:var(--blue-soft)}
-.tab-btn.active{color:var(--blue);border-bottom-color:var(--blue);background:var(--blue-soft)}
-.tab-panel{display:none}
-.tab-panel.active{display:block}
-
 /* Layout */
 .layout{display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start}
 @media(max-width:860px){.layout{grid-template-columns:1fr}}
@@ -191,31 +183,6 @@ td.bl{color:var(--blue)}
 .prog-fill.done{background:var(--green-hi)}
 .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--text-3)}
 
-/* Tab 2 hero */
-.t2-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);border-radius:var(--r-lg);padding:20px 24px;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,.06)}
-.t2-hero .hl{font-size:10px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:6px}
-.t2-hero .main{font-family:'Playfair Display',serif;font-size:19px;font-weight:600;color:#fff;line-height:1.35}
-.t2-hero .main em{color:#7dd3fc;font-style:normal}
-.t2-hero .sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
-
-/* Shortcuts */
-.sc-wrap{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:2px}
-.sc-btn{padding:4px 12px;border:1.5px solid var(--border-2);border-radius:20px;background:var(--card);font-family:'Inter',sans-serif;font-size:12px;font-weight:600;color:var(--text-2);cursor:pointer;transition:all .12s}
-.sc-btn:hover{border-color:var(--blue);color:var(--blue);background:var(--blue-soft)}
-.sc-btn.active{border-color:var(--blue);background:var(--blue-soft);color:var(--blue)}
-
-/* Timeline */
-.tl-wrap{overflow-x:auto;max-height:380px;overflow-y:auto}
-.tl-table{min-width:460px}
-.tl-table td.hit{background:var(--green-bg);color:var(--green-hi);font-weight:700}
-.tl-table td.cur{background:var(--blue-soft)}
-.tl-table td.cur.hit{background:var(--green-bg)}
-thead th.cur{background:var(--blue-soft)}
-
-/* Tab 2 input group label */
-.ig-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.09em;margin:14px 0 8px;padding-top:10px;border-top:1px solid var(--border)}
-.ig-lbl:first-of-type{margin-top:0;padding-top:0;border-top:none}
-
 .hidden{display:none!important}
 footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px}
 </style>
@@ -242,13 +209,6 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
     <p>Full Capresta compensation structure · All figures in Canadian dollars</p>
   </div>
 
-  <div class="tab-nav">
-    <button class="tab-btn active" onclick="switchTab('tab1',this)">Earnings Calculator</button>
-    <button class="tab-btn" onclick="switchTab('tab2',this)">Calls to Target</button>
-  </div>
-
-  <!-- TAB 1 -->
-  <div class="tab-panel active" id="tab1">
   <div class="layout">
     <div class="left-col">
       <div class="panel">
@@ -269,7 +229,7 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
         </div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">Avg jobs per active partner / month</span><span class="sv" id="v-jpp">0.5</span></div>
+          <div class="sh"><span class="sl">Partner → job rate (avg jobs/partner/mo)</span><span class="sv" id="v-jpp">0.5</span></div>
           <input type="range" min="1" max="30" value="5" step="1" id="s-jpp">
           <div class="imp info" id="imp-jpp"><span class="arr">→</span><span>3 repeat jobs this month</span></div>
         </div>
@@ -367,133 +327,11 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
       </div>
     </div>
   </div>
-  </div>
-
-  <!-- TAB 2 -->
-  <div class="tab-panel" id="tab2">
-  <div class="layout">
-    <div class="left-col">
-      <div class="panel">
-        <div class="panel-title">Calls to target — inputs</div>
-
-        <div class="ig-lbl">Your goal</div>
-        <div class="sl" style="margin-bottom:5px">Target monthly earnings</div>
-        <div class="num-wrap" style="margin-bottom:14px">
-          <span class="num-pre">$</span>
-          <input type="number" id="t2-target" value="2000" min="100" step="100" oninput="renderTab2()">
-        </div>
-
-        <div class="ig-lbl">Calling stats</div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Calls per day</span><span class="sv" id="t2-v-cpd">50</span></div>
-          <input type="range" min="5" max="200" value="50" step="5" id="t2-s-cpd">
-          <div class="imp info" style="margin-top:4px"><span class="arr">→</span><span id="t2-i-cpd">~1,085 calls/mo</span></div>
-        </div>
-
-        <div style="margin-bottom:10px">
-          <div class="sl" style="margin-bottom:5px">Quick select</div>
-          <div class="sc-wrap" id="sc-btns">
-            <button class="sc-btn" onclick="setCPD(10)">10/day</button>
-            <button class="sc-btn" onclick="setCPD(25)">25/day</button>
-            <button class="sc-btn active" onclick="setCPD(50)">50/day</button>
-            <button class="sc-btn" onclick="setCPD(75)">75/day</button>
-            <button class="sc-btn" onclick="setCPD(100)">100/day</button>
-          </div>
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Connect rate</span><span class="sv" id="t2-v-cr">50%</span></div>
-          <input type="range" min="10" max="100" value="50" step="5" id="t2-s-cr">
-          <div class="imp info" style="margin-top:4px"><span class="arr">→</span><span id="t2-i-cr">~25 connects/day</span></div>
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Call-to-partner rate</span><span class="sv" id="t2-v-ctp">10%</span></div>
-          <input type="range" min="1" max="50" value="10" step="1" id="t2-s-ctp">
-          <div class="imp info" style="margin-top:4px"><span class="arr">→</span><span id="t2-i-ctp">~2.5 partners signed/day</span></div>
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Sign-to-first-job rate</span><span class="sv" id="t2-v-stj">60%</span></div>
-          <input type="range" min="20" max="100" value="60" step="5" id="t2-s-stj">
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Avg weeks: signing → first job</span><span class="sv" id="t2-v-del">3 wks</span></div>
-          <input type="range" min="1" max="12" value="3" step="1" id="t2-s-del">
-        </div>
-
-        <div class="ig-lbl">Portfolio stats</div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Monthly partner retention</span><span class="sv" id="t2-v-ret">70%</span></div>
-          <input type="range" min="30" max="100" value="70" step="5" id="t2-s-ret">
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Avg repeat jobs per partner / mo</span><span class="sv" id="t2-v-rpp">0.5</span></div>
-          <input type="range" min="1" max="20" value="5" step="1" id="t2-s-rpp">
-        </div>
-
-        <div class="sl" style="margin-bottom:5px">Job value (avg Capresta margin)</div>
-        <div class="num-wrap" style="margin-bottom:12px">
-          <span class="num-pre">$</span>
-          <input type="number" id="t2-jv" value="1200" min="100" step="50" oninput="renderTab2()">
-        </div>
-
-        <div class="divider"></div>
-        <div class="tog-row">
-          <div><div class="tog-lbl">Include volume bonuses</div><div class="tog-sub">Adds volume tier bonus to projections</div></div>
-          <label class="tog-sw"><input type="checkbox" id="t2-tog" onchange="renderTab2()"><span class="t-track"></span></label>
-        </div>
-      </div>
-    </div>
-
-    <div class="right-col">
-      <div class="t2-hero">
-        <div class="hl">Calls to Target — Projection</div>
-        <div class="main" id="t2-main">Adjust inputs to see your timeline</div>
-        <div class="sub" id="t2-sub"></div>
-      </div>
-
-      <div class="kpi-row" style="grid-template-columns:repeat(4,1fr)">
-        <div class="kpi"><div class="k-lbl">Partners / mo</div><div class="k-val" id="t2-k-sign">—</div><div class="k-sub" id="t2-k-sign-s">calls × connect × partner</div></div>
-        <div class="kpi"><div class="k-lbl">First jobs / mo</div><div class="k-val" id="t2-k-fj">—</div><div class="k-sub" id="t2-k-fj-s">after delay</div></div>
-        <div class="kpi"><div class="k-lbl">Active partners</div><div class="k-val" id="t2-k-ap">—</div><div class="k-sub">at month 12</div></div>
-        <div class="kpi g"><div class="k-lbl">Steady-state / mo</div><div class="k-val" id="t2-k-ss">—</div><div class="k-sub">at month 18</div></div>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Earnings at different daily call volumes</div>
-        <table><thead><tr><th>Calls/day</th><th>Partners/mo</th><th>Month 3</th><th>Month 6</th><th>Month 12</th><th>Steady (mo 18)</th></tr></thead><tbody id="sc-tbody"></tbody></table>
-      </div>
-
-      <div class="panel">
-        <div class="panel-title">Monthly earnings timeline — 4 scenarios</div>
-        <div class="tl-wrap">
-          <table class="tl-table">
-            <thead id="t2-thead"></thead>
-            <tbody id="t2-tbody"></tbody>
-          </table>
-        </div>
-      </div>
-    </div>
-  </div>
-  </div>
 
   <footer>Capresta Corporation &nbsp;·&nbsp; Rep Earnings Calculator v2.2 &nbsp;·&nbsp; All figures in CAD</footer>
 </div>
 
 <script>
-// Utils
-function switchTab(id,btn){
-  document.querySelectorAll('.tab-panel').forEach(p=>p.classList.remove('active'));
-  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
-  btn.classList.add('active');
-  if(id==='tab2') renderTab2();
-}
 const $=id=>document.getElementById(id);
 const set=(id,t)=>{const e=$(id);if(e)e.textContent=t};
 function cad(n){return'$'+Math.round(Math.abs(n)).toLocaleString()}
@@ -616,75 +454,7 @@ function render(){
   }).join('');
 }
 
-// Tab 2
-const WDAYS=21.67;
-[{s:'t2-s-cpd',v:'t2-v-cpd',f:v=>v},{s:'t2-s-cr',v:'t2-v-cr',f:v=>v+'%'},{s:'t2-s-ctp',v:'t2-v-ctp',f:v=>v+'%'},{s:'t2-s-stj',v:'t2-v-stj',f:v=>v+'%'},{s:'t2-s-del',v:'t2-v-del',f:v=>v+' wks'},{s:'t2-s-ret',v:'t2-v-ret',f:v=>v+'%'},{s:'t2-s-rpp',v:'t2-v-rpp',f:v=>(v/10).toFixed(1)}]
-.forEach(({s,v,f})=>{const el=$(s);if(!el)return;el.addEventListener('input',()=>{set(v,f(el.value));renderTab2()})});
-
-function setCPD(n){
-  $('t2-s-cpd').value=n;set('t2-v-cpd',n);
-  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.toggle('active',b.textContent===n+'/day'));
-  renderTab2();
-}
-
-function simRun(cpd,p){
-  const{cr,ctp,stj,delWks,ret,rpp,margin,incB}=p;
-  const sigMo=cpd*WDAYS*cr*ctp,delMo=Math.max(1,Math.round(delWks/4.33));
-  let ap=0,q=new Array(delMo+1).fill(0),out=[];
-  for(let m=0;m<18;m++){
-    const fj=Math.round(q[0]||0);q.shift();q.push(sigMo*stj);
-    ap=ap*ret+fj;
-    const rj=Math.max(0,Math.round(ap*rpp)-fj),tj=fj+rj;
-    out.push({m:m+1,earn:fj*80+rj*margin*.25+(incB?volBonus(tj).b:0),ap:Math.round(ap),fj,rj});
-  }
-  return out;
-}
-
-function renderTab2(){
-  const cpd=gv('t2-s-cpd'),cr=pct('t2-s-cr'),ctp=pct('t2-s-ctp'),stj=pct('t2-s-stj');
-  const delWks=gv('t2-s-del'),ret=pct('t2-s-ret'),rpp=gv('t2-s-rpp')/10;
-  const margin=+$('t2-jv').value||1200,incB=$('t2-tog').checked;
-  const target=+$('t2-target').value||2000;
-  const p={cr,ctp,stj,delWks,ret,rpp,margin,incB};
-
-  // Impact hints
-  const conn=cpd*cr;
-  set('t2-i-cpd',`~${Math.round(cpd*WDAYS).toLocaleString()} calls/mo (${WDAYS.toFixed(0)} working days/mo)`);
-  set('t2-i-cr',`~${conn.toFixed(1)} connects/day`);
-  set('t2-i-ctp',`~${(conn*ctp).toFixed(1)} partners signed/day`);
-
-  // Mark active sc btn
-  document.querySelectorAll('.sc-btn').forEach(b=>b.classList.toggle('active',b.textContent===cpd+'/day'));
-
-  const cur=simRun(cpd,p);
-  const sigMo=(cpd*WDAYS*cr*ctp).toFixed(1);
-  set('t2-k-sign',sigMo);set('t2-k-sign-s',`${cpd}/day × ${Math.round(cr*100)}% × ${Math.round(ctp*100)}%`);
-  set('t2-k-fj',(cur[5]?.fj||0).toFixed(1)+'/mo');set('t2-k-fj-s',`~${delWks}wk delay · ${Math.round(stj*100)}% convert`);
-  set('t2-k-ap',cur[11]?Math.round(cur[11].ap):'—');set('t2-k-ss',cur[17]?cad(cur[17].earn):'—');
-
-  const hit=cur.findIndex(r=>r.earn>=target);
-  if(hit>=0){$('t2-main').innerHTML=`At <em>${cpd} calls/day</em>, you hit <em>${cad(target)}/mo</em> by <em>Month ${hit+1}</em>`;set('t2-sub',`Steady-state at month 18: ${cad(cur[17].earn)}/mo`)}
-  else{$('t2-main').innerHTML=`At <em>${cpd} calls/day</em>, <em>${cad(target)}/mo</em> not reached in 18 months`;set('t2-sub',`Month 18: ${cad(cur[17].earn)}/mo — try more calls or better conversion`)}
-
-  // Shortcuts table
-  $('sc-tbody').innerHTML=[10,25,50,75,100,150].map(d=>{
-    const sd=simRun(d,p),sm=(d*WDAYS*cr*ctp).toFixed(1),cur2=d===cpd;
-    return`<tr style="${cur2?'background:#eff4ff':''}"><td class="${cur2?'s bl':'s'}">${d}/day${cur2?' ◀':''}</td><td>${sm}</td><td class="p">${cad(sd[2].earn)}</td><td class="p">${cad(sd[5].earn)}</td><td class="p">${cad(sd[11].earn)}</td><td class="g" style="font-weight:700">${cad(sd[17].earn)}</td></tr>`;
-  }).join('');
-
-  // Timeline
-  const scens=[{l:'½ calls',cpd:Math.round(cpd*.5),cur:false},{l:'Current',cpd,cur:true},{l:'1.5×',cpd:Math.round(cpd*1.5),cur:false},{l:'2×',cpd:cpd*2,cur:false}];
-  const sims=scens.map(sc=>({...sc,data:simRun(sc.cpd,p)}));
-  const hits=sims.map(sc=>sc.data.findIndex(r=>r.earn>=target));
-  $('t2-thead').innerHTML=`<tr><th>Month</th>${scens.map(sc=>`<th class="${sc.cur?'cur':''}">${sc.l}${sc.cur?' ◀':''}<br><small style="font-weight:400;font-size:10px;opacity:.6">${sc.cpd}/day</small></th>`).join('')}</tr>`;
-  $('t2-tbody').innerHTML=Array.from({length:18},(_,i)=>{
-    const cells=sims.map((sc,si)=>{const isHit=hits[si]===i;const cls=[isHit?'hit':'',sc.cur?'cur':''].filter(Boolean).join(' ');return`<td class="${cls}">${cad(sc.data[i].earn)}${isHit?' ✓':''}</td>`}).join('');
-    return`<tr><td class="s">${i+1}</td>${cells}</tr>`;
-  }).join('');
-}
-
 render();
-renderTab2();
 </script>
 </body>
 </html>
