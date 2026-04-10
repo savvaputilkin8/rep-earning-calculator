@@ -4,205 +4,408 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Capresta — Rep Earnings Calculator</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=DM+Serif+Display:ital@0;1&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy:       #0d1b36;
-  --navy-mid:   #162444;
-  --navy-light: #1e3060;
-  --blue:       #2563eb;
-  --blue-soft:  #eff4ff;
-  --blue-mid:   #bfcffd;
-  --green:      #15803d;
-  --green-bg:   #f0fdf4;
-  --green-bd:   #86efac;
-  --green-hi:   #16a34a;
-  --amber:      #92400e;
-  --amber-bg:   #fffbeb;
-  --amber-bd:   #fcd34d;
-  --gold:       #d97706;
-  --bg:         #f1f4f9;
-  --card:       #ffffff;
-  --text:       #0d1b36;
-  --text-2:     #4b5e7a;
-  --text-3:     #8a9ab5;
-  --border:     #e2e8f0;
-  --border-2:   #cbd5e1;
-  --r:          8px;
-  --r-lg:       14px;
-  --sh:         0 1px 4px rgba(13,27,54,.07),0 1px 2px rgba(13,27,54,.04);
-  --sh-md:      0 4px 20px rgba(13,27,54,.10),0 2px 6px rgba(13,27,54,.06);
-  --sh-lg:      0 8px 32px rgba(13,27,54,.13),0 2px 8px rgba(13,27,54,.07);
+  --navy:        #09172e;
+  --navy-mid:    #112240;
+  --navy-light:  #1a3260;
+  --blue:        #2563eb;
+  --blue-hover:  #1d4ed8;
+  --blue-soft:   #eaf1ff;
+  --blue-mid:    #b8ccfc;
+  --blue-glow:   rgba(37,99,235,.13);
+  --green:       #15803d;
+  --green-bg:    #f0fdf4;
+  --green-bd:    #86efac;
+  --green-hi:    #16a34a;
+  --amber:       #92400e;
+  --amber-bg:    #fffbeb;
+  --amber-bd:    #fcd34d;
+  --gold:        #d97706;
+  --bg:          #e6e9f2;
+  --card:        #ffffff;
+  --text:        #09172e;
+  --text-2:      #445672;
+  --text-3:      #8494ae;
+  --border:      #dae0ec;
+  --border-2:    #c4cede;
+  --r:           10px;
+  --r-lg:        16px;
+  --sh:          0 1px 4px rgba(9,23,46,.06), 0 1px 2px rgba(9,23,46,.04);
+  --sh-md:       0 6px 28px rgba(9,23,46,.10), 0 2px 6px rgba(9,23,46,.05);
+  --sh-lg:       0 12px 48px rgba(9,23,46,.16), 0 3px 10px rgba(9,23,46,.08);
 }
+
 *{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;line-height:1.5;min-height:100vh}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Manrope',sans-serif;font-size:14px;line-height:1.55;min-height:100vh}
 
-/* Topbar */
-.topbar{background:var(--navy);padding:0 28px;height:54px;display:flex;align-items:center;justify-content:space-between;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(0,0,0,.25)}
-.topbar-brand{display:flex;align-items:center;gap:10px}
-.topbar-logo{width:30px;height:30px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.topbar-logo img{width:30px;height:30px;object-fit:contain}
-.topbar-name{font-family:'Playfair Display',serif;font-size:15px;font-weight:600;color:#fff;letter-spacing:.01em}
-.topbar-right{display:flex;align-items:center;gap:14px}
-.topbar-label{font-size:11px;color:rgba(255,255,255,.35);letter-spacing:.06em;text-transform:uppercase}
-.portal-btn{background:var(--blue);color:#fff;border:none;border-radius:6px;padding:7px 14px;font-family:'Inter',sans-serif;font-size:12px;font-weight:600;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;transition:background .15s,transform .1s}
-.portal-btn:hover{background:#1d4ed8;transform:translateY(-1px)}
+/* ─── Topbar ──────────────────────────────────────────── */
+.topbar{
+  background:var(--navy);
+  padding:0 32px;
+  height:58px;
+  display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:100;
+  border-bottom:1px solid rgba(255,255,255,.06);
+  box-shadow:0 2px 16px rgba(0,0,0,.22);
+}
+.topbar-brand{display:flex;align-items:center;gap:11px}
+.topbar-logo{width:28px;height:28px;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+.topbar-logo img{width:28px;height:28px;object-fit:contain}
+.topbar-name{font-family:'DM Serif Display',serif;font-size:17px;color:#fff;letter-spacing:.01em}
+.topbar-right{display:flex;align-items:center;gap:16px}
+.topbar-label{font-size:11px;font-weight:600;color:rgba(255,255,255,.28);letter-spacing:.08em;text-transform:uppercase}
+.portal-btn{
+  background:var(--blue);color:#fff;border:none;border-radius:8px;
+  padding:7px 15px;font-family:'Manrope',sans-serif;font-size:12px;font-weight:700;
+  cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;gap:6px;
+  transition:background .15s, transform .1s, box-shadow .15s;
+  letter-spacing:.01em;
+}
+.portal-btn:hover{background:var(--blue-hover);transform:translateY(-1px);box-shadow:0 4px 14px rgba(37,99,235,.4)}
 
-/* App */
-.app{max-width:1220px;margin:0 auto;padding:22px 20px 60px}
-.page-header{margin-bottom:16px}
-.page-header h1{font-family:'Playfair Display',serif;font-size:24px;font-weight:600;color:var(--navy);letter-spacing:-.02em}
-.page-header p{font-size:12px;color:var(--text-3);margin-top:3px}
+/* ─── App shell ───────────────────────────────────────── */
+.app{max-width:1260px;margin:0 auto;padding:28px 24px 72px}
 
-/* Layout */
-.layout{display:grid;grid-template-columns:300px 1fr;gap:16px;align-items:start}
-@media(max-width:860px){.layout{grid-template-columns:1fr}}
-.left-col{position:sticky;top:70px;display:flex;flex-direction:column;gap:12px}
-.right-col{display:flex;flex-direction:column;gap:12px}
+.page-header{margin-bottom:22px;display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.page-header-left h1{font-family:'DM Serif Display',serif;font-size:26px;color:var(--navy);letter-spacing:-.01em;line-height:1.2}
+.page-header-left p{font-size:12px;font-weight:500;color:var(--text-3);margin-top:4px;letter-spacing:.01em}
+.page-badge{background:var(--blue-soft);border:1px solid var(--blue-mid);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;color:var(--blue);letter-spacing:.04em;text-transform:uppercase}
 
-/* Panel */
-.panel{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:18px;box-shadow:var(--sh)}
-.panel-title{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+/* ─── Layout ──────────────────────────────────────────── */
+.layout{display:grid;grid-template-columns:320px 1fr;gap:20px;align-items:start}
+@media(max-width:880px){.layout{grid-template-columns:1fr}}
+.left-col{position:sticky;top:70px;display:flex;flex-direction:column;gap:16px}
+.right-col{display:flex;flex-direction:column;gap:16px}
 
-/* Section label */
-.sec-lbl{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.09em;text-transform:uppercase;margin:14px 0 10px;display:flex;align-items:center;gap:8px}
+/* ─── Panel ───────────────────────────────────────────── */
+.panel{
+  background:var(--card);
+  border:1px solid var(--border);
+  border-radius:var(--r-lg);
+  padding:22px;
+  box-shadow:var(--sh);
+  transition:box-shadow .2s;
+}
+.panel-title{
+  font-size:10px;font-weight:800;
+  color:var(--text-3);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin-bottom:18px;padding-bottom:12px;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;gap:8px;
+}
+.panel-title-dot{width:6px;height:6px;border-radius:50%;background:var(--blue);flex-shrink:0;opacity:.6}
+
+/* ─── Section labels ──────────────────────────────────── */
+.sec-lbl{
+  font-size:9.5px;font-weight:800;
+  color:var(--text-3);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin:18px 0 12px;
+  display:flex;align-items:center;gap:8px;
+}
 .sec-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 .sec-lbl:first-child{margin-top:0}
 
-/* Sliders */
-.sg{margin-bottom:12px}
-.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:5px}
-.sl{font-size:12px;color:var(--text-2);font-weight:500}
-.sv{font-size:12px;font-weight:700;color:var(--navy);background:var(--blue-soft);border:1px solid var(--blue-mid);border-radius:4px;padding:2px 8px;min-width:50px;text-align:center}
-input[type=range]{-webkit-appearance:none;appearance:none;width:100%;height:3px;background:var(--border-2);border-radius:2px;outline:none;cursor:pointer}
-input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:14px;height:14px;border-radius:50%;background:var(--blue);border:2px solid #fff;box-shadow:0 1px 4px rgba(37,99,235,.45);cursor:pointer;transition:transform .12s}
-input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.25)}
-input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;background:var(--blue);border:2px solid #fff;cursor:pointer}
+/* ─── Input group ─────────────────────────────────────── */
+.sg{margin-bottom:14px}
+.input-label{font-size:12px;font-weight:600;color:var(--text-2);margin-bottom:7px;display:block;letter-spacing:.01em}
 
-/* Impact hints */
-.imp{margin-top:4px;font-size:11px;font-weight:600;display:flex;align-items:center;gap:4px;transition:color .2s}
+/* Plain number input */
+.plain-wrap{
+  background:#f6f7fb;
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;
+  margin-bottom:6px;
+  transition:border-color .15s, box-shadow .15s;
+}
+.plain-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+.plain-wrap input[type=number]{
+  border:none;background:transparent;outline:none;
+  font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;color:var(--navy);
+  padding:9px 14px;width:100%;-moz-appearance:textfield;
+}
+.plain-wrap input[type=number]::-webkit-outer-spin-button,
+.plain-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+
+/* Dollar-prefixed number input */
+.num-wrap{
+  display:flex;align-items:center;
+  background:#f6f7fb;
+  border:1.5px solid var(--border);
+  border-radius:var(--r);
+  overflow:hidden;margin-bottom:6px;
+  transition:border-color .15s, box-shadow .15s;
+}
+.num-wrap:focus-within{border-color:var(--blue);box-shadow:0 0 0 3px var(--blue-glow)}
+.num-pre{
+  padding:9px 10px 9px 14px;
+  font-size:14px;font-weight:700;color:var(--text-3);
+  border-right:1px solid var(--border);
+  background:#eff1f7;
+}
+.num-wrap input[type=number]{
+  border:none;background:transparent;outline:none;
+  font-family:'Manrope',sans-serif;font-size:15px;font-weight:700;color:var(--navy);
+  padding:9px 14px;width:100%;-moz-appearance:textfield;
+}
+.num-wrap input[type=number]::-webkit-outer-spin-button,
+.num-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+
+/* ─── Sliders ─────────────────────────────────────────── */
+.sh{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.sl{font-size:12px;font-weight:600;color:var(--text-2);letter-spacing:.01em}
+.sv{
+  font-size:11px;font-weight:800;color:var(--blue);
+  background:var(--blue-soft);border:1px solid var(--blue-mid);
+  border-radius:6px;padding:2px 9px;min-width:48px;text-align:center;
+  letter-spacing:.01em;
+}
+input[type=range]{
+  -webkit-appearance:none;appearance:none;
+  width:100%;height:4px;
+  background:var(--border-2);border-radius:3px;outline:none;cursor:pointer;
+  margin-bottom:2px;
+}
+input[type=range]::-webkit-slider-thumb{
+  -webkit-appearance:none;
+  width:16px;height:16px;border-radius:50%;
+  background:var(--blue);border:2.5px solid #fff;
+  box-shadow:0 1px 6px rgba(37,99,235,.50);
+  cursor:pointer;transition:transform .12s, box-shadow .12s;
+}
+input[type=range]::-webkit-slider-thumb:hover{transform:scale(1.2);box-shadow:0 2px 10px rgba(37,99,235,.60)}
+input[type=range]::-moz-range-thumb{
+  width:16px;height:16px;border-radius:50%;
+  background:var(--blue);border:2.5px solid #fff;cursor:pointer;
+}
+
+/* ─── Impact hints ────────────────────────────────────── */
+.imp{font-size:11px;font-weight:600;display:flex;align-items:center;gap:5px;transition:color .2s;margin-top:2px}
 .imp.pos{color:var(--green-hi)}
 .imp.info{color:var(--text-3)}
 .imp.hi{color:var(--blue)}
-.imp .arr{opacity:.5;font-size:10px}
+.imp-icon{font-size:10px;opacity:.6}
 
-/* Derived chips */
-.chips{display:flex;gap:6px;flex-wrap:wrap;margin:4px 0 12px}
-.chip{background:var(--blue-soft);border:1px solid var(--blue-mid);border-radius:20px;padding:3px 10px;font-size:11px;color:var(--text-2);font-weight:500}
-.chip strong{color:var(--navy);font-weight:700}
+/* ─── Derived chips ───────────────────────────────────── */
+.chips{display:flex;gap:8px;flex-wrap:wrap;margin:4px 0 14px}
+.chip{
+  background:var(--blue-soft);border:1px solid var(--blue-mid);
+  border-radius:20px;padding:4px 12px;
+  font-size:11px;font-weight:600;color:var(--text-2);
+}
+.chip strong{color:var(--navy);font-weight:800}
 
-/* Volume chip */
-.vol-chip{display:flex;align-items:center;gap:6px;padding:8px 11px;border-radius:var(--r);font-size:11px;font-weight:600;margin-bottom:10px}
+/* ─── Volume banner ───────────────────────────────────── */
+.vol-chip{
+  display:flex;align-items:center;gap:8px;
+  padding:10px 13px;border-radius:var(--r);
+  font-size:11px;font-weight:700;margin-bottom:12px;
+  letter-spacing:.01em;
+}
 .vol-chip.empty{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
 .vol-chip.active{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green-hi)}
+.vol-chip-icon{font-size:13px;flex-shrink:0}
 
-/* Number input — dollar prefix */
-.num-wrap{display:flex;align-items:center;background:var(--blue-soft);border:1.5px solid var(--blue-mid);border-radius:6px;overflow:hidden;margin-bottom:10px}
-.num-pre{padding:7px 10px 7px 12px;font-size:13px;font-weight:700;color:var(--text-3)}
-.num-wrap input[type=number]{border:none;background:transparent;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--navy);padding:7px 12px 7px 0;width:100%;-moz-appearance:textfield}
-.num-wrap input[type=number]::-webkit-outer-spin-button,.num-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+/* ─── Divider ─────────────────────────────────────────── */
+.divider{height:1px;background:var(--border);margin:14px 0}
 
-/* Plain number input — no prefix */
-.plain-wrap{background:var(--blue-soft);border:1.5px solid var(--blue-mid);border-radius:6px;overflow:hidden;margin-bottom:10px}
-.plain-wrap input[type=number]{border:none;background:transparent;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--navy);padding:7px 12px;width:100%;-moz-appearance:textfield}
-.plain-wrap input[type=number]::-webkit-outer-spin-button,.plain-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
-
-.divider{height:1px;background:var(--border);margin:10px 0}
-
-/* Toggle */
-.tog-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0 2px}
-.tog-lbl{font-size:13px;font-weight:600;color:var(--navy)}
-.tog-sub{font-size:11px;color:var(--text-3);margin-top:1px}
-.tog-sw{position:relative;width:42px;height:23px;flex-shrink:0}
+/* ─── Toggle ──────────────────────────────────────────── */
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:8px 0}
+.tog-lbl{font-size:13px;font-weight:700;color:var(--navy)}
+.tog-sub{font-size:11px;font-weight:500;color:var(--text-3);margin-top:2px}
+.tog-sw{position:relative;width:42px;height:24px;flex-shrink:0}
 .tog-sw input{opacity:0;width:0;height:0}
-.t-track{position:absolute;inset:0;background:var(--border-2);border-radius:12px;cursor:pointer;transition:background .2s}
-.t-track::after{content:'';position:absolute;left:3px;top:3px;width:17px;height:17px;background:#fff;border-radius:50%;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:transform .2s}
+.t-track{
+  position:absolute;inset:0;
+  background:var(--border-2);border-radius:12px;cursor:pointer;
+  transition:background .2s;
+}
+.t-track::after{
+  content:'';position:absolute;left:3px;top:3px;
+  width:18px;height:18px;background:#fff;border-radius:50%;
+  box-shadow:0 1px 4px rgba(0,0,0,.18);transition:transform .2s;
+}
 .tog-sw input:checked+.t-track{background:var(--blue)}
-.tog-sw input:checked+.t-track::after{transform:translateX(19px)}
+.tog-sw input:checked+.t-track::after{transform:translateX(18px)}
 
-/* Prominent bonus toggle */
-.bonus-tog-row{display:flex;align-items:center;justify-content:space-between;padding:11px 14px;background:linear-gradient(135deg,var(--navy-light) 0%,var(--navy) 100%);border-radius:var(--r);margin-top:10px}
-.bonus-tog-row .tog-lbl{color:#fff}
-.bonus-tog-row .tog-sub{color:rgba(255,255,255,.5)}
+/* ─── Bonus toggle row ────────────────────────────────── */
+.bonus-tog-row{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:13px 16px;
+  background:linear-gradient(135deg,var(--navy-light) 0%,var(--navy) 100%);
+  border-radius:var(--r);margin-top:12px;
+  border:1px solid rgba(255,255,255,.07);
+}
+.bonus-tog-row .tog-lbl{color:#fff;font-size:12px}
+.bonus-tog-row .tog-sub{color:rgba(255,255,255,.45)}
 
-.bonus-inputs{display:none}
+.bonus-inputs{display:none;padding-top:4px}
 .bonus-inputs.on{display:block}
-.b-sec-lbl{font-size:10px;font-weight:700;color:var(--blue);letter-spacing:.09em;text-transform:uppercase;margin:12px 0 10px;padding-top:10px;border-top:1px solid var(--blue-mid)}
+.b-sec-lbl{
+  font-size:9.5px;font-weight:800;color:var(--blue);
+  letter-spacing:.12em;text-transform:uppercase;
+  margin:14px 0 12px;padding-top:12px;
+  border-top:1px solid var(--blue-mid);
+}
 
-/* Hero */
-.hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy-light) 100%);border-radius:var(--r-lg);padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;box-shadow:var(--sh-lg);border:1px solid rgba(255,255,255,.06)}
-.h-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
-.h-val{font-family:'Playfair Display',serif;font-size:38px;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1}
-.h-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
-.h-stats{display:flex;gap:18px;flex-wrap:wrap}
+/* ─── Hero (earnings) ─────────────────────────────────── */
+.hero{
+  background:linear-gradient(130deg,var(--navy) 0%,#162c5a 50%,var(--navy-light) 100%);
+  border-radius:var(--r-lg);
+  padding:28px 30px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:18px;
+  box-shadow:var(--sh-lg);
+  border:1px solid rgba(255,255,255,.07);
+  position:relative;overflow:hidden;
+}
+.hero::before{
+  content:'';position:absolute;right:-60px;top:-60px;
+  width:240px;height:240px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.22) 0%,transparent 70%);
+  pointer-events:none;
+}
+.hero::after{
+  content:'';position:absolute;left:-30px;bottom:-40px;
+  width:180px;height:180px;border-radius:50%;
+  background:radial-gradient(circle,rgba(255,255,255,.04) 0%,transparent 65%);
+  pointer-events:none;
+}
+.h-main{position:relative;z-index:1}
+.h-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.42);text-transform:uppercase;letter-spacing:.12em;margin-bottom:6px}
+.h-val{font-family:'DM Serif Display',serif;font-size:46px;color:#fff;letter-spacing:-.02em;line-height:1}
+.h-sub{font-size:11px;font-weight:500;color:rgba(255,255,255,.38);margin-top:7px;letter-spacing:.01em}
+.h-stats{display:flex;gap:24px;flex-wrap:wrap;position:relative;z-index:1}
 .h-stat{text-align:right}
-.h-stat .hl{font-size:10px;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}
-.h-stat .hv{font-size:16px;font-weight:700;color:rgba(255,255,255,.88)}
+.h-stat .hl{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.09em;margin-bottom:4px}
+.h-stat .hv{font-family:'DM Serif Display',serif;font-size:20px;color:rgba(255,255,255,.90)}
 
-/* KPI row */
-.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+/* ─── KPI cards ───────────────────────────────────────── */
+.kpi-row{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
 .kpi-row.two{grid-template-columns:repeat(2,1fr)}
-@media(max-width:900px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
-.kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--r-lg);padding:13px 15px;box-shadow:var(--sh);transition:box-shadow .15s}
-.kpi:hover{box-shadow:var(--sh-md)}
+@media(max-width:920px){.kpi-row{grid-template-columns:repeat(2,1fr)}}
+.kpi{
+  background:var(--card);border:1px solid var(--border);
+  border-radius:var(--r-lg);padding:16px 18px;
+  box-shadow:var(--sh);transition:box-shadow .18s, transform .18s;
+  position:relative;overflow:hidden;
+}
+.kpi:hover{box-shadow:var(--sh-md);transform:translateY(-1px)}
+.kpi::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:var(--border);border-radius:var(--r-lg) var(--r-lg) 0 0;
+}
 .kpi.g{background:var(--green-bg);border-color:var(--green-bd)}
-.k-lbl{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin-bottom:5px}
+.kpi.g::before{background:var(--green-hi)}
+.k-lbl{font-size:9.5px;font-weight:800;color:var(--text-3);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
 .kpi.g .k-lbl{color:var(--green)}
-.k-val{font-family:'Playfair Display',serif;font-size:21px;font-weight:600;color:var(--navy);letter-spacing:-.02em;line-height:1}
+.k-val{font-family:'DM Serif Display',serif;font-size:24px;color:var(--navy);letter-spacing:-.01em;line-height:1}
 .kpi.g .k-val{color:var(--green-hi)}
-.k-sub{font-size:11px;color:var(--text-3);margin-top:3px}
+.k-sub{font-size:11px;font-weight:500;color:var(--text-3);margin-top:5px}
 
-/* Tables */
+/* ─── Tables ──────────────────────────────────────────── */
 table{width:100%;border-collapse:collapse;font-size:12px}
-thead th{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;text-align:left;padding:0 0 8px;border-bottom:1px solid var(--border)}
+thead th{
+  font-size:9.5px;font-weight:800;color:var(--text-3);
+  letter-spacing:.1em;text-transform:uppercase;
+  text-align:left;padding:0 0 10px;
+  border-bottom:2px solid var(--border);
+}
 thead th:not(:first-child){text-align:right}
-tbody td{padding:7px 0;border-bottom:1px solid var(--border);color:var(--text-2);vertical-align:middle}
+tbody td{
+  padding:9px 0;
+  border-bottom:1px solid var(--border);
+  color:var(--text-2);vertical-align:middle;
+  font-weight:500;
+}
 tbody td:not(:first-child){text-align:right}
 tbody tr:last-child td{border-bottom:none}
-tbody tr:hover{background:#fafbfd}
-td.s{color:var(--navy);font-weight:600}
-td.p{color:var(--green-hi);font-weight:600}
+tbody tr:hover td{background:rgba(37,99,235,.03)}
+td.s{color:var(--navy);font-weight:700}
+td.p{color:var(--green-hi);font-weight:700}
 td.z{color:var(--text-3)}
-td.g{color:var(--gold);font-weight:700}
-td.sep{border-top:2px solid var(--border-2);padding-top:9px}
-td.dim{color:var(--text-3);font-size:11px}
-td.bl{color:var(--blue)}
+td.g{color:var(--gold);font-weight:800}
+td.sep{border-top:2px solid var(--border-2);padding-top:10px}
+td.dim{color:var(--text-3);font-size:11px;font-weight:500}
+td.bl{color:var(--blue);font-weight:700}
 
-/* Badges */
-.badge{display:inline-flex;align-items:center;gap:3px;padding:2px 7px;border-radius:20px;font-size:10px;font-weight:700}
+/* ─── Badges ──────────────────────────────────────────── */
+.badge{
+  display:inline-flex;align-items:center;gap:3px;
+  padding:2px 8px;border-radius:20px;
+  font-size:10px;font-weight:800;letter-spacing:.02em;
+}
 .b-g{background:var(--green-bg);color:var(--green-hi);border:1px solid var(--green-bd)}
 .b-gr{background:var(--bg);color:var(--text-3);border:1px solid var(--border)}
 
-/* Milestones */
-.ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+/* ─── Milestone cards ─────────────────────────────────── */
+.ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 @media(max-width:700px){.ms-grid{grid-template-columns:1fr}}
-.ms-card{border:1px solid var(--border);border-radius:var(--r);padding:11px 13px;background:var(--bg)}
+.ms-card{
+  border:1px solid var(--border);border-radius:var(--r);
+  padding:13px 15px;background:#f8f9fc;
+  transition:border-color .2s;
+}
 .ms-card.done{border-color:var(--green-bd);background:var(--green-bg)}
 .ms-card.done .ms-lbl{color:var(--green)}
-.ms-lbl{font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
-.ms-desc{font-size:12px;color:var(--text-2);margin-bottom:7px}
-.ms-ok{font-size:12px;color:var(--green-hi);font-weight:700}
-.ms-bonus{font-size:11px;color:var(--text-3)}
-.prog-track{height:5px;background:var(--border-2);border-radius:3px;overflow:hidden;margin-bottom:3px}
-.prog-fill{height:100%;border-radius:3px;background:var(--blue);transition:width .4s cubic-bezier(.4,0,.2,1)}
+.ms-lbl{font-size:9.5px;font-weight:800;color:var(--text-3);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px}
+.ms-desc{font-size:12px;font-weight:500;color:var(--text-2);margin-bottom:9px}
+.ms-ok{font-size:12px;font-weight:700;color:var(--green-hi)}
+.ms-bonus{font-size:11px;font-weight:600;color:var(--text-3)}
+.prog-track{height:5px;background:var(--border-2);border-radius:3px;overflow:hidden;margin-bottom:4px}
+.prog-fill{height:100%;border-radius:3px;background:var(--blue);transition:width .45s cubic-bezier(.4,0,.2,1)}
 .prog-fill.done{background:var(--green-hi)}
-.prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--text-3)}
+.prog-lbl{display:flex;justify-content:space-between;font-size:10px;font-weight:600;color:var(--text-3)}
 
-/* Call estimator hero */
-.call-hero{background:linear-gradient(135deg,#1a3a6e 0%,var(--navy) 100%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;border:1px solid rgba(255,255,255,.06)}
-.ch-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
-.ch-val{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1}
-.ch-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
-.ch-stats{display:flex;gap:16px;flex-wrap:wrap}
+/* ─── Call estimator hero ─────────────────────────────── */
+.call-hero{
+  background:linear-gradient(130deg,#0f2a5c 0%,#1a3270 50%,#112348 100%);
+  border-radius:var(--r);padding:20px 22px;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:14px;margin-bottom:18px;
+  border:1px solid rgba(255,255,255,.08);
+  position:relative;overflow:hidden;
+}
+.call-hero::before{
+  content:'';position:absolute;right:-40px;top:-40px;
+  width:160px;height:160px;border-radius:50%;
+  background:radial-gradient(circle,rgba(37,99,235,.28) 0%,transparent 70%);
+  pointer-events:none;
+}
+.ch-main{position:relative;z-index:1}
+.ch-lbl{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.12em;margin-bottom:5px}
+.ch-val{font-family:'DM Serif Display',serif;font-size:38px;color:#fff;letter-spacing:-.02em;line-height:1}
+.ch-sub{font-size:11px;font-weight:500;color:rgba(255,255,255,.36);margin-top:6px}
+.ch-stats{display:flex;gap:20px;flex-wrap:wrap;position:relative;z-index:1}
 .ch-stat{text-align:right}
-.ch-stat .chl{font-size:10px;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}
-.ch-stat .chv{font-size:15px;font-weight:700;color:rgba(255,255,255,.88)}
+.ch-stat .chl{font-size:9.5px;font-weight:700;color:rgba(255,255,255,.35);text-transform:uppercase;letter-spacing:.09em;margin-bottom:3px}
+.ch-stat .chv{font-family:'DM Serif Display',serif;font-size:18px;color:rgba(255,255,255,.88)}
 
-/* Funnel table */
-.funnel-lbl{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin:12px 0 8px}
+/* ─── Funnel section label ────────────────────────────── */
+.funnel-lbl{font-size:9.5px;font-weight:800;color:var(--text-3);letter-spacing:.12em;text-transform:uppercase;margin:16px 0 10px;display:flex;align-items:center;gap:8px}
+.funnel-lbl::after{content:'';flex:1;height:1px;background:var(--border)}
 
+/* ─── Misc ────────────────────────────────────────────── */
 .hidden{display:none!important}
-footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px}
+
+footer{
+  margin-top:48px;text-align:center;
+  font-size:11px;font-weight:600;color:var(--text-3);
+  border-top:1px solid var(--border);padding-top:22px;
+  letter-spacing:.03em;
+}
+
+/* ─── Fade-in animation ───────────────────────────────── */
+@keyframes fadeUp{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.hero{animation:fadeUp .45s ease both}
+.kpi-row{animation:fadeUp .45s .08s ease both}
+.panel{animation:fadeUp .45s .12s ease both}
+.left-col .panel{animation:fadeUp .45s .04s ease both}
 </style>
 </head>
 <body>
@@ -210,10 +413,10 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
 <div class="topbar">
   <div class="topbar-brand">
     <div class="topbar-logo"><img src="capresta-icon.png" alt="Capresta"></div>
-    <span class="topbar-name">Capresta Corporation</span>
+    <span class="topbar-name">Capresta</span>
   </div>
   <div class="topbar-right">
-    <span class="topbar-label">Rep Earnings — CAD</span>
+    <span class="topbar-label">Rep Earnings · CAD</span>
     <a href="https://savva.ca" target="_blank" class="portal-btn">
       <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
       Sales Portal
@@ -223,31 +426,36 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
 
 <div class="app">
   <div class="page-header">
-    <h1>Sales Rep Earnings Calculator</h1>
-    <p>Full Capresta compensation structure · All figures in Canadian dollars</p>
+    <div class="page-header-left">
+      <h1>Earnings Calculator</h1>
+      <p>Full Capresta compensation structure · All figures in Canadian dollars</p>
+    </div>
+    <div class="page-badge">Sales Rep</div>
   </div>
 
   <div class="layout">
+
+    <!-- ── Left sidebar: inputs ──────────────────────── -->
     <div class="left-col">
       <div class="panel">
-        <div class="panel-title">Monthly activity inputs</div>
+        <div class="panel-title"><span class="panel-title-dot"></span>Monthly Activity Inputs</div>
 
         <div class="sec-lbl">Your pipeline</div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">Total active partners</span></div>
+          <label class="input-label">Total active partners</label>
           <div class="plain-wrap">
             <input type="number" id="n-ap" value="5" min="0" max="500" step="1" oninput="render()">
           </div>
-          <div class="imp info" id="imp-ap"><span class="arr">→</span><span>25% commission rate</span></div>
+          <div class="imp info" id="imp-ap"><span class="imp-icon">→</span><span>25% commission rate</span></div>
         </div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">Avg jobs sent per partner</span></div>
+          <label class="input-label">Avg jobs sent per partner</label>
           <div class="plain-wrap">
             <input type="number" id="n-jpp" value="0.5" min="0" max="20" step="0.1" oninput="render()">
           </div>
-          <div class="imp info" id="imp-jpp"><span class="arr">→</span><span>3 repeat jobs this month</span></div>
+          <div class="imp info" id="imp-jpp"><span class="imp-icon">→</span><span>3 repeat jobs this month</span></div>
         </div>
 
         <div class="chips">
@@ -256,37 +464,46 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
         </div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">Partners sending first job</span></div>
+          <label class="input-label">Partners sending first job</label>
           <div class="plain-wrap">
             <input type="number" id="n-nfj" value="2" min="0" step="1" oninput="render()">
           </div>
-          <div class="imp pos" id="imp-nfj"><span class="arr">→</span><span>$160 earned ($80 × 2)</span></div>
+          <div class="imp pos" id="imp-nfj"><span class="imp-icon">→</span><span>$160 earned ($80 × 2)</span></div>
         </div>
 
         <div class="divider"></div>
         <div class="sec-lbl">Margin &amp; history</div>
 
-        <div class="sl" style="margin-bottom:5px">Average margin per job</div>
+        <label class="input-label">Average margin per job</label>
         <div class="num-wrap">
           <span class="num-pre">$</span>
           <input type="number" id="n-margin" value="800" min="100" max="10000" step="50" oninput="syncMarginSlider()">
         </div>
-        <input type="range" min="300" max="2500" value="800" step="50" id="s-margin" style="margin-bottom:4px">
-        <div class="imp pos" id="imp-margin"><span class="arr">→</span><span>$600 repeat commission</span></div>
+        <input type="range" min="300" max="2500" value="800" step="50" id="s-margin">
+        <div class="imp pos" id="imp-margin" style="margin-top:6px"><span class="imp-icon">→</span><span>$600 repeat commission</span></div>
 
         <div class="divider"></div>
 
         <div class="tog-row">
-          <div><div class="tog-lbl">First ever job with Capresta?</div><div class="tog-sub">One-time +$100 on top of first job bonus</div></div>
+          <div>
+            <div class="tog-lbl">First ever job with Capresta?</div>
+            <div class="tog-sub">One-time +$100 on top of first job bonus</div>
+          </div>
           <label class="tog-sw"><input type="checkbox" id="tog-fe" onchange="render()"><span class="t-track"></span></label>
         </div>
 
         <div class="divider"></div>
 
-        <div class="vol-chip empty" id="vol-chip"><span>📊</span><span id="vol-txt">Need 5 more jobs for $150 volume bonus</span></div>
+        <div class="vol-chip empty" id="vol-chip">
+          <span class="vol-chip-icon">📊</span>
+          <span id="vol-txt">Need 5 more jobs for $150 volume bonus</span>
+        </div>
 
         <div class="bonus-tog-row">
-          <div><div class="tog-lbl">Include bonuses</div><div class="tog-sub">Volume, speed &amp; streak bonuses</div></div>
+          <div>
+            <div class="tog-lbl">Include bonuses</div>
+            <div class="tog-sub">Volume, speed &amp; streak bonuses</div>
+          </div>
           <label class="tog-sw"><input type="checkbox" id="tog-bon" onchange="render()"><span class="t-track"></span></label>
         </div>
 
@@ -296,27 +513,30 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
           <div class="sg">
             <div class="sh"><span class="sl">Fast first job (within 7 days)</span><span class="sv" id="v-ff">0</span></div>
             <input type="range" min="0" max="30" value="0" step="1" id="s-ff">
-            <div class="imp info" id="imp-ff"><span class="arr">→</span><span>+$0 (0 × $50)</span></div>
+            <div class="imp info" id="imp-ff"><span class="imp-icon">→</span><span>+$0 (0 × $50)</span></div>
           </div>
 
           <div class="sg">
             <div class="sh"><span class="sl">Hot start (3 jobs in first 30 days)</span><span class="sv" id="v-hs">0</span></div>
             <input type="range" min="0" max="30" value="0" step="1" id="s-hs">
-            <div class="imp info" id="imp-hs"><span class="arr">→</span><span>+$0 (0 × $75)</span></div>
+            <div class="imp info" id="imp-hs"><span class="imp-icon">→</span><span>+$0 (0 × $75)</span></div>
           </div>
 
           <div class="sg">
             <div class="sh"><span class="sl">Streak months in a row</span><span class="sv" id="v-str">0 mo</span></div>
             <input type="range" min="0" max="6" value="0" step="1" id="s-str">
-            <div class="imp info" id="imp-str"><span class="arr">→</span><span>No streak · 2mo = $300</span></div>
+            <div class="imp info" id="imp-str"><span class="imp-icon">→</span><span>No streak · 2mo = $300</span></div>
           </div>
         </div>
       </div>
     </div>
 
+    <!-- ── Right column: results ──────────────────────── -->
     <div class="right-col">
+
+      <!-- Earnings hero -->
       <div class="hero">
-        <div>
+        <div class="h-main">
           <div class="h-lbl" id="h-lbl">Base earnings per month</div>
           <div class="h-val" id="h-total">$0</div>
           <div class="h-sub" id="h-sub">Adjust inputs to calculate</div>
@@ -328,36 +548,58 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
         </div>
       </div>
 
+      <!-- KPI row -->
       <div class="kpi-row two" id="kpi-row">
-        <div class="kpi"><div class="k-lbl">First job bonuses</div><div class="k-val" id="k-fj">$0</div><div class="k-sub" id="k-fj-s">0 new partners × $80</div></div>
-        <div class="kpi"><div class="k-lbl">Repeat commission</div><div class="k-val" id="k-rc">$0</div><div class="k-sub" id="k-rc-s">25% on 0 jobs</div></div>
-        <div class="kpi hidden" id="k-vol-c"><div class="k-lbl">Volume bonus</div><div class="k-val" id="k-vol">$0</div><div class="k-sub" id="k-vol-s">Need 5+ total jobs</div></div>
-        <div class="kpi g hidden" id="k-oth-c"><div class="k-lbl">Speed &amp; streak</div><div class="k-val" id="k-oth">$0</div><div class="k-sub" id="k-oth-s">—</div></div>
+        <div class="kpi">
+          <div class="k-lbl">First job bonuses</div>
+          <div class="k-val" id="k-fj">$0</div>
+          <div class="k-sub" id="k-fj-s">0 new partners × $80</div>
+        </div>
+        <div class="kpi">
+          <div class="k-lbl">Repeat commission</div>
+          <div class="k-val" id="k-rc">$0</div>
+          <div class="k-sub" id="k-rc-s">25% on 0 jobs</div>
+        </div>
+        <div class="kpi hidden" id="k-vol-c">
+          <div class="k-lbl">Volume bonus</div>
+          <div class="k-val" id="k-vol">$0</div>
+          <div class="k-sub" id="k-vol-s">Need 5+ total jobs</div>
+        </div>
+        <div class="kpi g hidden" id="k-oth-c">
+          <div class="k-lbl">Speed &amp; streak</div>
+          <div class="k-val" id="k-oth">$0</div>
+          <div class="k-sub" id="k-oth-s">—</div>
+        </div>
       </div>
 
+      <!-- Breakdown panel (bonuses only) -->
       <div class="panel hidden" id="bkdn-panel">
-        <div class="panel-title">Full monthly earnings breakdown</div>
-        <table><thead><tr><th>Component</th><th>Calculation</th><th>Earned</th><th>Status</th></tr></thead><tbody id="bkdn-body"></tbody></table>
+        <div class="panel-title"><span class="panel-title-dot"></span>Full Monthly Earnings Breakdown</div>
+        <table>
+          <thead><tr><th>Component</th><th>Calculation</th><th>Earned</th><th>Status</th></tr></thead>
+          <tbody id="bkdn-body"></tbody>
+        </table>
       </div>
 
+      <!-- Bonus milestones panel -->
       <div class="panel hidden" id="ms-panel">
-        <div class="panel-title">Bonus progress tracker</div>
+        <div class="panel-title"><span class="panel-title-dot"></span>Bonus Progress Tracker</div>
         <div class="ms-grid" id="ms-grid"></div>
       </div>
 
-      <!-- Daily Call Target -->
+      <!-- Daily call target -->
       <div class="panel">
-        <div class="panel-title">Daily calls needed</div>
+        <div class="panel-title"><span class="panel-title-dot"></span>Daily Calls Needed</div>
 
         <div class="call-hero">
-          <div>
+          <div class="ch-main">
             <div class="ch-lbl">Calls per day to hit your target</div>
-            <div class="ch-val" id="ch-calls">0</div>
-            <div class="ch-sub" id="ch-sub2">Based on 22 working days/month</div>
+            <div class="ch-val" id="ch-calls">—</div>
+            <div class="ch-sub" id="ch-sub2">Based on 22 working days / month</div>
           </div>
           <div class="ch-stats">
-            <div class="ch-stat"><div class="chl">Connects / day</div><div class="chv" id="ch-conn">0</div></div>
-            <div class="ch-stat"><div class="chl">Sign-ups / day</div><div class="chv" id="ch-part">0</div></div>
+            <div class="ch-stat"><div class="chl">Connects / day</div><div class="chv" id="ch-conn">—</div></div>
+            <div class="ch-stat"><div class="chl">Sign-ups / day</div><div class="chv" id="ch-part">—</div></div>
           </div>
         </div>
 
@@ -366,32 +608,47 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
         <div class="sg">
           <div class="sh"><span class="sl">Connect rate</span><span class="sv" id="v-cr">50%</span></div>
           <input type="range" min="1" max="100" value="50" step="1" id="s-cr">
-          <div class="imp info"><span class="arr">→</span><span>% of calls that reach someone</span></div>
+          <div class="imp info"><span class="imp-icon">→</span><span>% of calls that reach someone</span></div>
         </div>
 
         <div class="sg">
           <div class="sh"><span class="sl">Partnership rate</span><span class="sv" id="v-pr">33%</span></div>
           <input type="range" min="1" max="100" value="33" step="1" id="s-pr">
-          <div class="imp info"><span class="arr">→</span><span>% of connects that sign up as a partner</span></div>
+          <div class="imp info"><span class="imp-icon">→</span><span>% of connects that sign up as a partner</span></div>
         </div>
 
         <div class="sg">
           <div class="sh"><span class="sl">Partner → listing rate</span><span class="sv" id="v-clr">10%</span></div>
           <input type="range" min="1" max="100" value="10" step="1" id="s-clr">
-          <div class="imp info"><span class="arr">→</span><span>% of new partners that send a job</span></div>
+          <div class="imp info"><span class="imp-icon">→</span><span>% of new partners that send a job</span></div>
         </div>
 
-        <div class="funnel-lbl" style="margin-top:14px">Monthly funnel</div>
+        <div class="funnel-lbl" style="margin-top:18px">Monthly funnel</div>
         <table>
           <thead><tr><th>Stage</th><th>Per Day</th><th>Per Month</th></tr></thead>
           <tbody id="funnel-body"></tbody>
         </table>
       </div>
 
+      <!-- Projections -->
       <div class="panel">
-        <div class="panel-title">Monthly projections — if you push harder</div>
-        <table><thead><tr><th>Scenario</th><th>New partners</th><th>Total partners</th><th>Repeat comm.</th><th>Bonuses</th><th>Total/mo</th><th>Annual</th></tr></thead><tbody id="proj-body"></tbody></table>
+        <div class="panel-title"><span class="panel-title-dot"></span>Monthly Projections — Push Harder</div>
+        <table>
+          <thead>
+            <tr>
+              <th>Scenario</th>
+              <th>New partners</th>
+              <th>Total partners</th>
+              <th>Repeat comm.</th>
+              <th>Bonuses</th>
+              <th>Total / mo</th>
+              <th>Annual</th>
+            </tr>
+          </thead>
+          <tbody id="proj-body"></tbody>
+        </table>
       </div>
+
     </div>
   </div>
 
@@ -530,19 +787,15 @@ function render(){
     {l:'40 total partners',fj:Math.max(nfj,2),ap:40},
   ].map((sc,i)=>{
     const pe=calc(sc.fj,sc.ap,jpp,margin,false,incB,0,0,str),cur=i===0;
-    return`<tr style="${cur?'background:#eff4ff':''}"><td class="${cur?'s bl':'s'}">${sc.l}${cur?' ◀':''}</td><td>${sc.fj}</td><td>${sc.ap}</td><td class="p">${cad(pe.rc)}</td><td class="p">${cad(pe.bon)}</td><td class="g" style="font-weight:700">${cad(pe.total)}</td><td class="p">${cadK(pe.total*12)}</td></tr>`;
+    return`<tr style="${cur?'background:#eaf1ff':''}"><td class="${cur?'s bl':'s'}">${sc.l}${cur?' ◀':''}</td><td>${sc.fj}</td><td>${sc.ap}</td><td class="p">${cad(pe.rc)}</td><td class="p">${cad(pe.bon)}</td><td class="g" style="font-weight:800">${cad(pe.total)}</td><td class="p">${cadK(pe.total*12)}</td></tr>`;
   }).join('');
 
-  // --- Call estimator ---
-  const cr=gv('s-cr')/100;   // connect rate
-  const pr=gv('s-pr')/100;   // partnership rate
-  const clr=gv('s-clr')/100; // convert-to-listing rate
+  // ── Call estimator ──────────────────────────────────
+  const cr=gv('s-cr')/100;
+  const pr=gv('s-pr')/100;
+  const clr=gv('s-clr')/100;
   const DAYS=22;
 
-  // Working backwards from target new partners that send a job
-  // partners_to_sign = nfj / clr (need more sign-ups since not all send a job)
-  // connects_needed = partners_to_sign / pr
-  // calls_needed = connects_needed / cr
   const partnersNeeded = clr>0 ? nfj/clr : 0;
   const connectsNeeded = pr>0  ? partnersNeeded/pr : 0;
   const callsNeeded    = cr>0  ? connectsNeeded/cr  : 0;
@@ -558,13 +811,13 @@ function render(){
   set('ch-calls', nfj===0?'—':fmt1(callsPerDay));
   set('ch-conn',  nfj===0?'—':fmt2(connectsPerDay));
   set('ch-part',  nfj===0?'—':fmt2(partsPerDay));
-  set('ch-sub2',  nfj===0?'Set new partners above to calculate':'Based on '+DAYS+' working days/month · targeting '+nfj+' new partner'+(nfj!==1?'s':'')+' sending a job');
+  set('ch-sub2',  nfj===0?'Set partners sending first job above to calculate':'Based on '+DAYS+' working days / month · targeting '+nfj+' new partner'+(nfj!==1?'s':'')+' sending a job');
 
   $('funnel-body').innerHTML=[
-    {stage:'Calls (dials)',       day:callsPerDay,    mo:callsNeeded},
-    {stage:'Connects',            day:connectsPerDay, mo:connectsNeeded},
-    {stage:'New partnerships',    day:partsPerDay,    mo:partnersNeeded},
-    {stage:'Jobs from new partners', day:jobsPerDay,  mo:nfj},
+    {stage:'Calls (dials)',          day:callsPerDay,    mo:callsNeeded},
+    {stage:'Connects',               day:connectsPerDay, mo:connectsNeeded},
+    {stage:'New partnerships',       day:partsPerDay,    mo:partnersNeeded},
+    {stage:'Jobs from new partners', day:jobsPerDay,     mo:nfj},
   ].map((r,i)=>{
     const isLast=i===3;
     return`<tr><td class="${isLast?'s':''}">${r.stage}</td><td class="${isLast?'p':''}">${r.day>0?fmt2(r.day):'—'}</td><td class="${isLast?'p':''}">${r.mo>0?Math.ceil(r.mo).toLocaleString():'—'}</td></tr>`;
