@@ -445,7 +445,7 @@ footer{
         <div class="sg">
           <label class="input-label">Total active partners</label>
           <div class="plain-wrap">
-            <input type="number" id="n-ap" value="5" min="0" max="500" step="1" oninput="render()">
+            <input type="number" id="n-ap" value="0" min="0" max="500" step="1" oninput="render()">
           </div>
           <div class="imp info" id="imp-ap"><span class="imp-icon">→</span><span>25% commission rate</span></div>
         </div>
@@ -466,7 +466,7 @@ footer{
         <div class="sg">
           <label class="input-label">Partners sending first job</label>
           <div class="plain-wrap">
-            <input type="number" id="n-nfj" value="2" min="0" step="1" oninput="render()">
+            <input type="number" id="n-nfj" value="0" min="0" step="1" oninput="render()">
           </div>
           <div class="imp pos" id="imp-nfj"><span class="imp-icon">→</span><span>$160 earned ($80 × 2)</span></div>
         </div>
@@ -543,7 +543,7 @@ footer{
         </div>
         <div class="h-stats">
           <div class="h-stat"><div class="hl">Annualized</div><div class="hv" id="h-annual">$0</div></div>
-          <div class="h-stat"><div class="hl">Repeat comm.</div><div class="hv" id="h-repeat">$0</div></div>
+          <div class="h-stat"><div class="hl">Commission</div><div class="hv" id="h-repeat">$0</div></div>
           <div class="h-stat hidden" id="h-bon-stat"><div class="hl">Bonuses</div><div class="hv" id="h-bonuses">$0</div></div>
         </div>
       </div>
@@ -556,7 +556,7 @@ footer{
           <div class="k-sub" id="k-fj-s">0 new partners × $80</div>
         </div>
         <div class="kpi">
-          <div class="k-lbl">Repeat commission</div>
+          <div class="k-lbl">Commission</div>
           <div class="k-val" id="k-rc">$0</div>
           <div class="k-sub" id="k-rc-s">25% on 0 jobs</div>
         </div>
@@ -639,7 +639,7 @@ footer{
               <th>Scenario</th>
               <th>New partners</th>
               <th>Total partners</th>
-              <th>Repeat comm.</th>
+              <th>Commission</th>
               <th>Bonuses</th>
               <th>Total / mo</th>
               <th>Annual</th>
@@ -670,7 +670,7 @@ function strkBonus(s){return s>=6?2000:s>=3?800:s>=2?300:0}
 
 function calc(nfj,ap,jpp,margin,fe,incB,ff,hs,str){
   const rj=Math.round(ap*jpp),tj=nfj+rj,rate=ap>=40?.35:.25;
-  const rc=rj*margin*rate,fjb=nfj*80,feb=fe?100:0;
+  const rc=tj*margin*rate,fjb=nfj*80,feb=fe?100:0;
   let vb=0,vt='',spd=0,stk=0;
   if(incB){const v=volBonus(tj);vb=v.b;vt=v.t;spd=Math.min(ff,nfj)*50+Math.min(hs,nfj)*75;stk=strkBonus(str)}
   const bon=vb+spd+stk;
@@ -713,7 +713,7 @@ function render(){
   setImp('imp-nfj',nfj>0?'pos':'info',nfj>0?`$${(nfj*80).toLocaleString()} earned ($80 × ${nfj})`:'No first job bonuses yet · $80 per new partner');
   setImp('imp-ap',ap>=40?'hi':'info',ap>=40?'35% commission rate — milestone hit!':'25% commission rate'+(ap>=38?' · 2 away from 40-partner milestone':''));
   setImp('imp-jpp','info',e.rj===1?'1 repeat job this month':`${e.rj} repeat jobs this month`);
-  setImp('imp-margin',e.rj>0?'pos':'info',e.rj>0?`${cad(e.rc)} repeat commission (${Math.round(e.rate*100)}% × ${e.rj} jobs × $${margin.toLocaleString()})`:'No repeat jobs yet');
+  setImp('imp-margin',e.tj>0?'pos':'info',e.tj>0?`${cad(e.rc)} commission (${Math.round(e.rate*100)}% × ${e.tj} jobs × $${margin.toLocaleString()})`:'No jobs yet');
 
   if(incB){
     const ffc=Math.min(ff,nfj),hsc=Math.min(hs,nfj);
@@ -741,7 +741,7 @@ function render(){
   set('h-sub',`${e.tj} total jobs · ${nfj} new partners · ${ap} total partners`);
 
   set('k-fj',cad(e.fjb+e.feb));set('k-fj-s',`${nfj} × $80${fe?' + $100 first-ever':''}`);
-  set('k-rc',cad(e.rc));set('k-rc-s',`${Math.round(e.rate*100)}% on ${e.rj} repeat job${e.rj!==1?'s':''}`);
+  set('k-rc',cad(e.rc));set('k-rc-s',`${Math.round(e.rate*100)}% on ${e.tj} job${e.tj!==1?'s':''}`);
   set('k-vol',cad(e.vb));set('k-vol-s',e.vt||'Need 5+ total jobs');
   set('k-oth',cad(e.spd+e.stk));set('k-oth-s',`Speed ${cad(e.spd)} + Streak ${cad(e.stk)}`);
 
@@ -750,7 +750,7 @@ function render(){
     const rows=[
       {l:'First job bonus',c:`${nfj} × $80`,earn:e.fjb,st:nfj>0?'g':'n'},
       {l:'First ever close',c:'One-time +$100',earn:e.feb,st:fe?'g':'na'},
-      {l:`Repeat comm. (${Math.round(e.rate*100)}%)`,c:`${e.rj} × $${margin.toLocaleString()} × ${Math.round(e.rate*100)}%`,earn:e.rc,st:e.rj>0?'g':'n'},
+      {l:`Commission (${Math.round(e.rate*100)}%)`,c:`${e.tj} × $${margin.toLocaleString()} × ${Math.round(e.rate*100)}%`,earn:e.rc,st:e.tj>0?'g':'n'},
       {l:'Volume bonus',c:e.vt||(nx?`Need ${nx-e.tj} more jobs`:'—'),earn:e.vb,st:e.vb>0?'g':'n'},
       {l:'Fast first job',c:`${ffc} × $50`,earn:ffc*50,st:ffc>0?'g':'n'},
       {l:'Hot start',c:`${hsc} × $75`,earn:hsc*75,st:hsc>0?'g':'n'},
