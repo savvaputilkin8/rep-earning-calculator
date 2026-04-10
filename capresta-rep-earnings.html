@@ -96,11 +96,16 @@ input[type=range]::-moz-range-thumb{width:14px;height:14px;border-radius:50%;bac
 .vol-chip.empty{background:var(--amber-bg);border:1px solid var(--amber-bd);color:var(--amber)}
 .vol-chip.active{background:var(--green-bg);border:1px solid var(--green-bd);color:var(--green-hi)}
 
-/* Number input */
+/* Number input — dollar prefix */
 .num-wrap{display:flex;align-items:center;background:var(--blue-soft);border:1.5px solid var(--blue-mid);border-radius:6px;overflow:hidden;margin-bottom:10px}
 .num-pre{padding:7px 10px 7px 12px;font-size:13px;font-weight:700;color:var(--text-3)}
 .num-wrap input[type=number]{border:none;background:transparent;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--navy);padding:7px 12px 7px 0;width:100%;-moz-appearance:textfield}
 .num-wrap input[type=number]::-webkit-outer-spin-button,.num-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+
+/* Plain number input — no prefix */
+.plain-wrap{background:var(--blue-soft);border:1.5px solid var(--blue-mid);border-radius:6px;overflow:hidden;margin-bottom:10px}
+.plain-wrap input[type=number]{border:none;background:transparent;outline:none;font-family:'Inter',sans-serif;font-size:14px;font-weight:700;color:var(--navy);padding:7px 12px;width:100%;-moz-appearance:textfield}
+.plain-wrap input[type=number]::-webkit-outer-spin-button,.plain-wrap input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
 
 .divider{height:1px;background:var(--border);margin:10px 0}
 
@@ -183,6 +188,19 @@ td.bl{color:var(--blue)}
 .prog-fill.done{background:var(--green-hi)}
 .prog-lbl{display:flex;justify-content:space-between;font-size:10px;color:var(--text-3)}
 
+/* Call estimator hero */
+.call-hero{background:linear-gradient(135deg,#1a3a6e 0%,var(--navy) 100%);border-radius:var(--r);padding:16px 18px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:12px;margin-bottom:14px;border:1px solid rgba(255,255,255,.06)}
+.ch-lbl{font-size:10px;font-weight:700;color:rgba(255,255,255,.45);text-transform:uppercase;letter-spacing:.1em;margin-bottom:3px}
+.ch-val{font-family:'Playfair Display',serif;font-size:34px;font-weight:700;color:#fff;letter-spacing:-.02em;line-height:1}
+.ch-sub{font-size:11px;color:rgba(255,255,255,.4);margin-top:4px}
+.ch-stats{display:flex;gap:16px;flex-wrap:wrap}
+.ch-stat{text-align:right}
+.ch-stat .chl{font-size:10px;color:rgba(255,255,255,.38);text-transform:uppercase;letter-spacing:.07em;font-weight:600;margin-bottom:2px}
+.ch-stat .chv{font-size:15px;font-weight:700;color:rgba(255,255,255,.88)}
+
+/* Funnel table */
+.funnel-lbl{font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.07em;text-transform:uppercase;margin:12px 0 8px}
+
 .hidden{display:none!important}
 footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);border-top:1px solid var(--border);padding-top:18px}
 </style>
@@ -214,23 +232,21 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
       <div class="panel">
         <div class="panel-title">Monthly activity inputs</div>
 
-        <div class="sec-lbl">Your activity</div>
+        <div class="sec-lbl">Your pipeline</div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">New partner first jobs this month</span><span class="sv" id="v-nfj">2</span></div>
-          <input type="range" min="0" max="30" value="2" step="1" id="s-nfj">
-          <div class="imp pos" id="imp-nfj"><span class="arr">→</span><span>$160 earned ($80 × 2)</span></div>
-        </div>
-
-        <div class="sg">
-          <div class="sh"><span class="sl">Total active partners (territory)</span><span class="sv" id="v-ap">5</span></div>
-          <input type="range" min="0" max="60" value="5" step="1" id="s-ap">
+          <div class="sh"><span class="sl">Total active partners</span></div>
+          <div class="plain-wrap">
+            <input type="number" id="n-ap" value="5" min="0" max="500" step="1" oninput="render()">
+          </div>
           <div class="imp info" id="imp-ap"><span class="arr">→</span><span>25% commission rate</span></div>
         </div>
 
         <div class="sg">
-          <div class="sh"><span class="sl">Partner → job rate (avg jobs/partner/mo)</span><span class="sv" id="v-jpp">0.5</span></div>
-          <input type="range" min="1" max="30" value="5" step="1" id="s-jpp">
+          <div class="sh"><span class="sl">Avg jobs sent per partner</span></div>
+          <div class="plain-wrap">
+            <input type="number" id="n-jpp" value="0.5" min="0" max="20" step="0.1" oninput="render()">
+          </div>
           <div class="imp info" id="imp-jpp"><span class="arr">→</span><span>3 repeat jobs this month</span></div>
         </div>
 
@@ -239,10 +255,18 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
           <div class="chip">Total jobs: <strong id="d-tj">5</strong></div>
         </div>
 
+        <div class="sg">
+          <div class="sh"><span class="sl">Partners sending first job</span></div>
+          <div class="plain-wrap">
+            <input type="number" id="n-nfj" value="2" min="0" step="1" oninput="render()">
+          </div>
+          <div class="imp pos" id="imp-nfj"><span class="arr">→</span><span>$160 earned ($80 × 2)</span></div>
+        </div>
+
         <div class="divider"></div>
         <div class="sec-lbl">Margin &amp; history</div>
 
-        <div class="sl" style="margin-bottom:5px">Capresta margin per job (avg)</div>
+        <div class="sl" style="margin-bottom:5px">Average margin per job</div>
         <div class="num-wrap">
           <span class="num-pre">$</span>
           <input type="number" id="n-margin" value="800" min="100" max="10000" step="50" oninput="syncMarginSlider()">
@@ -270,19 +294,19 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
           <div class="b-sec-lbl">Bonus inputs</div>
 
           <div class="sg">
-            <div class="sh"><span class="sl">Realtors: first job within 7 days</span><span class="sv" id="v-ff">0</span></div>
+            <div class="sh"><span class="sl">Fast first job (within 7 days)</span><span class="sv" id="v-ff">0</span></div>
             <input type="range" min="0" max="30" value="0" step="1" id="s-ff">
             <div class="imp info" id="imp-ff"><span class="arr">→</span><span>+$0 (0 × $50)</span></div>
           </div>
 
           <div class="sg">
-            <div class="sh"><span class="sl">Realtors: 3 jobs in first 30 days</span><span class="sv" id="v-hs">0</span></div>
+            <div class="sh"><span class="sl">Hot start (3 jobs in first 30 days)</span><span class="sv" id="v-hs">0</span></div>
             <input type="range" min="0" max="30" value="0" step="1" id="s-hs">
             <div class="imp info" id="imp-hs"><span class="arr">→</span><span>+$0 (0 × $75)</span></div>
           </div>
 
           <div class="sg">
-            <div class="sh"><span class="sl">Months hitting target in a row</span><span class="sv" id="v-str">0 mo</span></div>
+            <div class="sh"><span class="sl">Streak months in a row</span><span class="sv" id="v-str">0 mo</span></div>
             <input type="range" min="0" max="6" value="0" step="1" id="s-str">
             <div class="imp info" id="imp-str"><span class="arr">→</span><span>No streak · 2mo = $300</span></div>
           </div>
@@ -305,7 +329,7 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
       </div>
 
       <div class="kpi-row two" id="kpi-row">
-        <div class="kpi"><div class="k-lbl">First job bonuses</div><div class="k-val" id="k-fj">$0</div><div class="k-sub" id="k-fj-s">0 new realtors × $80</div></div>
+        <div class="kpi"><div class="k-lbl">First job bonuses</div><div class="k-val" id="k-fj">$0</div><div class="k-sub" id="k-fj-s">0 new partners × $80</div></div>
         <div class="kpi"><div class="k-lbl">Repeat commission</div><div class="k-val" id="k-rc">$0</div><div class="k-sub" id="k-rc-s">25% on 0 jobs</div></div>
         <div class="kpi hidden" id="k-vol-c"><div class="k-lbl">Volume bonus</div><div class="k-val" id="k-vol">$0</div><div class="k-sub" id="k-vol-s">Need 5+ total jobs</div></div>
         <div class="kpi g hidden" id="k-oth-c"><div class="k-lbl">Speed &amp; streak</div><div class="k-val" id="k-oth">$0</div><div class="k-sub" id="k-oth-s">—</div></div>
@@ -321,14 +345,57 @@ footer{margin-top:36px;text-align:center;font-size:11px;color:var(--text-3);bord
         <div class="ms-grid" id="ms-grid"></div>
       </div>
 
+      <!-- Daily Call Target -->
+      <div class="panel">
+        <div class="panel-title">Daily calls needed</div>
+
+        <div class="call-hero">
+          <div>
+            <div class="ch-lbl">Calls per day to hit your target</div>
+            <div class="ch-val" id="ch-calls">0</div>
+            <div class="ch-sub" id="ch-sub2">Based on 22 working days/month</div>
+          </div>
+          <div class="ch-stats">
+            <div class="ch-stat"><div class="chl">Connects / day</div><div class="chv" id="ch-conn">0</div></div>
+            <div class="ch-stat"><div class="chl">Sign-ups / day</div><div class="chv" id="ch-part">0</div></div>
+          </div>
+        </div>
+
+        <div class="funnel-lbl">Conversion rates</div>
+
+        <div class="sg">
+          <div class="sh"><span class="sl">Connect rate</span><span class="sv" id="v-cr">50%</span></div>
+          <input type="range" min="1" max="100" value="50" step="1" id="s-cr">
+          <div class="imp info"><span class="arr">→</span><span>% of calls that reach someone</span></div>
+        </div>
+
+        <div class="sg">
+          <div class="sh"><span class="sl">Partnership rate</span><span class="sv" id="v-pr">33%</span></div>
+          <input type="range" min="1" max="100" value="33" step="1" id="s-pr">
+          <div class="imp info"><span class="arr">→</span><span>% of connects that sign up as a partner</span></div>
+        </div>
+
+        <div class="sg">
+          <div class="sh"><span class="sl">Partner → listing rate</span><span class="sv" id="v-clr">10%</span></div>
+          <input type="range" min="1" max="100" value="10" step="1" id="s-clr">
+          <div class="imp info"><span class="arr">→</span><span>% of new partners that send a job</span></div>
+        </div>
+
+        <div class="funnel-lbl" style="margin-top:14px">Monthly funnel</div>
+        <table>
+          <thead><tr><th>Stage</th><th>Per Day</th><th>Per Month</th></tr></thead>
+          <tbody id="funnel-body"></tbody>
+        </table>
+      </div>
+
       <div class="panel">
         <div class="panel-title">Monthly projections — if you push harder</div>
-        <table><thead><tr><th>Scenario</th><th>First jobs</th><th>Partners</th><th>Repeat comm.</th><th>Bonuses</th><th>Total/mo</th><th>Annual</th></tr></thead><tbody id="proj-body"></tbody></table>
+        <table><thead><tr><th>Scenario</th><th>New partners</th><th>Total partners</th><th>Repeat comm.</th><th>Bonuses</th><th>Total/mo</th><th>Annual</th></tr></thead><tbody id="proj-body"></tbody></table>
       </div>
     </div>
   </div>
 
-  <footer>Capresta Corporation &nbsp;·&nbsp; Rep Earnings Calculator v2.2 &nbsp;·&nbsp; All figures in CAD</footer>
+  <footer>Capresta Corporation &nbsp;·&nbsp; Rep Earnings Calculator v2.3 &nbsp;·&nbsp; All figures in CAD</footer>
 </div>
 
 <script>
@@ -353,8 +420,12 @@ function calc(nfj,ap,jpp,margin,fe,incB,ff,hs,str){
   return{fjb,feb,rc,rate,rj,tj,vb,vt,spd,stk,bon,total:fjb+feb+rc+bon,nfj,ap,jpp,margin};
 }
 
-// Tab 1 sliders
-[{s:'s-nfj',v:'v-nfj',f:v=>v},{s:'s-ap',v:'v-ap',f:v=>v},{s:'s-jpp',v:'v-jpp',f:v=>(v/10).toFixed(1)},{s:'s-ff',v:'v-ff',f:v=>v},{s:'s-hs',v:'v-hs',f:v=>v},{s:'s-str',v:'v-str',f:v=>v+' mo'}]
+// Call rate sliders
+[{s:'s-cr',v:'v-cr'},{s:'s-pr',v:'v-pr'},{s:'s-clr',v:'v-clr'}]
+.forEach(({s,v})=>{const el=$(s);if(!el)return;el.addEventListener('input',()=>{set(v,el.value+'%');render()})});
+
+// Bonus sliders
+[{s:'s-ff',v:'v-ff',f:v=>v},{s:'s-hs',v:'v-hs',f:v=>v},{s:'s-str',v:'v-str',f:v=>v+' mo'}]
 .forEach(({s,v,f})=>{const el=$(s);if(!el)return;el.addEventListener('input',()=>{set(v,f(el.value));render()})});
 
 $('s-margin').addEventListener('input',()=>{$('n-margin').value=$('s-margin').value;render()});
@@ -363,19 +434,27 @@ function syncMarginSlider(){const v=Math.min(10000,Math.max(100,+$('n-margin').v
 function setImp(id,cls,txt){const el=$(id);el.className='imp '+cls;el.querySelector('span:last-child').textContent=txt}
 
 function render(){
-  const nfj=gv('s-nfj'),ap=gv('s-ap'),jpp=gv('s-jpp')/10;
-  const margin=+$('n-margin').value||800;
+  // Read inputs
+  const ap=Math.max(0,+$('n-ap').value||0);
+  const jpp=Math.max(0,+$('n-jpp').value||0);
+  // Cap new partners at total partners
+  const nfjRaw=Math.max(0,+$('n-nfj').value||0);
+  const nfj=Math.min(nfjRaw,ap);
+  if(nfjRaw>ap){$('n-nfj').value=ap}
+  $('n-nfj').max=ap;
+
+  const margin=Math.max(100,+$('n-margin').value||800);
   const fe=$('tog-fe').checked,incB=$('tog-bon').checked;
   const ff=gv('s-ff'),hs=gv('s-hs'),str=gv('s-str');
   const e=calc(nfj,ap,jpp,margin,fe,incB,ff,hs,str);
 
-  // Clamp bonus sliders
+  // Clamp bonus sliders to nfj
   ['s-ff','s-hs'].forEach(sid=>{const el=$(sid);el.max=nfj;if(+el.value>nfj){el.value=nfj;set(sid==='s-ff'?'v-ff':'v-hs',nfj)}});
 
   set('d-rj',e.rj);set('d-tj',e.tj);
 
-  setImp('imp-nfj',nfj>0?'pos':'info',nfj>0?`$${(nfj*80).toLocaleString()} earned ($80 × ${nfj})`:'No first job bonuses yet · $80 per new realtor');
-  setImp('imp-ap',ap>=40?'hi':'info',ap>=40?'35% commission rate — milestone hit! 🎉':`25% commission rate${ap>=38?' · Almost at 40 partner milestone!':''}`);
+  setImp('imp-nfj',nfj>0?'pos':'info',nfj>0?`$${(nfj*80).toLocaleString()} earned ($80 × ${nfj})`:'No first job bonuses yet · $80 per new partner');
+  setImp('imp-ap',ap>=40?'hi':'info',ap>=40?'35% commission rate — milestone hit!':'25% commission rate'+(ap>=38?' · 2 away from 40-partner milestone':''));
   setImp('imp-jpp','info',e.rj===1?'1 repeat job this month':`${e.rj} repeat jobs this month`);
   setImp('imp-margin',e.rj>0?'pos':'info',e.rj>0?`${cad(e.rc)} repeat commission (${Math.round(e.rate*100)}% × ${e.rj} jobs × $${margin.toLocaleString()})`:'No repeat jobs yet');
 
@@ -383,7 +462,7 @@ function render(){
     const ffc=Math.min(ff,nfj),hsc=Math.min(hs,nfj);
     setImp('imp-ff',ffc>0?'pos':'info',ffc>0?`+${cad(ffc*50)} (${ffc} × $50)`:nfj>0?`+$0 · up to ${nfj} eligible`:'No new partners yet');
     setImp('imp-hs',hsc>0?'pos':'info',hsc>0?`+${cad(hsc*75)} (${hsc} × $75)`:nfj>0?`+$0 · up to ${nfj} eligible`:'No new partners yet');
-    const stxt=str>=6?'+$2,000 (6-month streak 🔥)':str>=3?'+$800 (3-month streak)':str>=2?'+$300 (2-month streak)':str===1?'1 month in · need 1 more for $300':'No streak · 2 months = $300';
+    const stxt=str>=6?'+$2,000 (6-month streak)':str>=3?'+$800 (3-month streak)':str>=2?'+$300 (2-month streak)':str===1?'1 month in · need 1 more for $300':'No streak · 2 months = $300';
     setImp('imp-str',str>=2?'pos':'info',stxt);
   }
 
@@ -402,7 +481,7 @@ function render(){
 
   set('h-lbl',incB?'Total earnings per month (with bonuses)':'Base earnings per month');
   set('h-total',cad(e.total));set('h-annual',cadK(e.total*12));set('h-repeat',cad(e.rc));set('h-bonuses',cad(e.bon));
-  set('h-sub',`${e.tj} total jobs · ${nfj} first jobs · ${ap} active partners`);
+  set('h-sub',`${e.tj} total jobs · ${nfj} new partners · ${ap} total partners`);
 
   set('k-fj',cad(e.fjb+e.feb));set('k-fj-s',`${nfj} × $80${fe?' + $100 first-ever':''}`);
   set('k-rc',cad(e.rc));set('k-rc-s',`${Math.round(e.rate*100)}% on ${e.rj} repeat job${e.rj!==1?'s':''}`);
@@ -437,20 +516,58 @@ function render(){
       mh+=`<div class="ms-card${ok?' done':''}"><div class="ms-lbl">${l}</div><div class="ms-desc">Hit monthly target ${t} months in a row</div>${ok?`<div class="ms-ok">✓ Achieved — ${b}</div>`:`<div class="prog-track"><div class="prog-fill" style="width:${p}%"></div></div><div class="prog-lbl"><span>${str}/${t} mo</span><span>${p}%</span></div><div class="ms-bonus">${b} when reached</div>`}</div>`;
     });
     [{l:'Fast first job',d:'First job within 7 days',n:ffc,amt:ffc*50,r:'$50'},{l:'Hot start',d:'3 jobs in first 30 days',n:hsc,amt:hsc*75,r:'$75'}].forEach(s=>{
-      mh+=`<div class="ms-card${s.n>0?' done':''}"><div class="ms-lbl">${s.l}</div><div class="ms-desc">${s.d} — ${s.r}/realtor</div>${s.n>0?`<div class="ms-ok">✓ ${s.n} realtor${s.n>1?'s':''} = ${cad(s.amt)}</div>`:`<div class="ms-bonus" style="margin-top:4px">Set slider above to count qualifying realtors</div>`}</div>`;
+      mh+=`<div class="ms-card${s.n>0?' done':''}"><div class="ms-lbl">${s.l}</div><div class="ms-desc">${s.d} — ${s.r}/partner</div>${s.n>0?`<div class="ms-ok">✓ ${s.n} partner${s.n>1?'s':''} = ${cad(s.amt)}</div>`:`<div class="ms-bonus" style="margin-top:4px">Set slider above to count qualifying partners</div>`}</div>`;
     });
     $('ms-grid').innerHTML=mh;
   }
 
+  // Projections
   $('proj-body').innerHTML=[
     {l:'Current pace',fj:nfj,ap:ap},
-    {l:'+2 first jobs',fj:nfj+2,ap:ap},
-    {l:'+5 first jobs',fj:nfj+5,ap:ap+2},
-    {l:'+10 first jobs',fj:nfj+10,ap:ap+5},
-    {l:'40 partners',fj:Math.max(nfj,2),ap:40},
+    {l:'+2 new partners',fj:nfj+2,ap:ap},
+    {l:'+5 new partners',fj:nfj+5,ap:ap+2},
+    {l:'+10 new partners',fj:nfj+10,ap:ap+5},
+    {l:'40 total partners',fj:Math.max(nfj,2),ap:40},
   ].map((sc,i)=>{
     const pe=calc(sc.fj,sc.ap,jpp,margin,false,incB,0,0,str),cur=i===0;
     return`<tr style="${cur?'background:#eff4ff':''}"><td class="${cur?'s bl':'s'}">${sc.l}${cur?' ◀':''}</td><td>${sc.fj}</td><td>${sc.ap}</td><td class="p">${cad(pe.rc)}</td><td class="p">${cad(pe.bon)}</td><td class="g" style="font-weight:700">${cad(pe.total)}</td><td class="p">${cadK(pe.total*12)}</td></tr>`;
+  }).join('');
+
+  // --- Call estimator ---
+  const cr=gv('s-cr')/100;   // connect rate
+  const pr=gv('s-pr')/100;   // partnership rate
+  const clr=gv('s-clr')/100; // convert-to-listing rate
+  const DAYS=22;
+
+  // Working backwards from target new partners that send a job
+  // partners_to_sign = nfj / clr (need more sign-ups since not all send a job)
+  // connects_needed = partners_to_sign / pr
+  // calls_needed = connects_needed / cr
+  const partnersNeeded = clr>0 ? nfj/clr : 0;
+  const connectsNeeded = pr>0  ? partnersNeeded/pr : 0;
+  const callsNeeded    = cr>0  ? connectsNeeded/cr  : 0;
+
+  const callsPerDay    = callsNeeded/DAYS;
+  const connectsPerDay = connectsNeeded/DAYS;
+  const partsPerDay    = partnersNeeded/DAYS;
+  const jobsPerDay     = nfj/DAYS;
+
+  const fmt1=n=>n<1&&n>0?n.toFixed(1):Math.ceil(n).toLocaleString();
+  const fmt2=n=>n===0?'0':n<1?n.toFixed(2):n.toFixed(1);
+
+  set('ch-calls', nfj===0?'—':fmt1(callsPerDay));
+  set('ch-conn',  nfj===0?'—':fmt2(connectsPerDay));
+  set('ch-part',  nfj===0?'—':fmt2(partsPerDay));
+  set('ch-sub2',  nfj===0?'Set new partners above to calculate':'Based on '+DAYS+' working days/month · targeting '+nfj+' new partner'+(nfj!==1?'s':'')+' sending a job');
+
+  $('funnel-body').innerHTML=[
+    {stage:'Calls (dials)',       day:callsPerDay,    mo:callsNeeded},
+    {stage:'Connects',            day:connectsPerDay, mo:connectsNeeded},
+    {stage:'New partnerships',    day:partsPerDay,    mo:partnersNeeded},
+    {stage:'Jobs from new partners', day:jobsPerDay,  mo:nfj},
+  ].map((r,i)=>{
+    const isLast=i===3;
+    return`<tr><td class="${isLast?'s':''}">${r.stage}</td><td class="${isLast?'p':''}">${r.day>0?fmt2(r.day):'—'}</td><td class="${isLast?'p':''}">${r.mo>0?Math.ceil(r.mo).toLocaleString():'—'}</td></tr>`;
   }).join('');
 }
 
